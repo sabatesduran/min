@@ -1,0 +1,26 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+  title="Privacitat, min"
+  description="Com tracta les dades la landing i el generador web de min."
+>
+  <header class="page-hero container">
+    <h1>Les dades són teves.</h1>
+    <p>La landing no demana compte. El generador funciona localment, sense backend.</p>
+  </header>
+  <article class="prose container">
+    <h2>Esborranys locals</h2>
+    <p>El generador pot desar l’esborrany a l’emmagatzematge local del navegador perquè el puguis reprendre. Pots eliminar-lo des de la mateixa eina.</p>
+
+    <h2>Documents i IA</h2>
+    <p>La web no envia el document a cap servei d’intel·ligència artificial. Si copies les instruccions i fas servir un servei extern, s’aplicarà la política de privacitat d’aquell servei.</p>
+
+    <h2>Fitxers</h2>
+    <p>Quan importes un `.minut.json`, el navegador el llegeix per validar-lo i previsualitzar-lo. El fitxer no es puja a cap servidor de min.</p>
+
+    <h2>Analítica</h2>
+    <p>Aquesta versió no incorpora analítica, publicitat ni cookies de seguiment.</p>
+  </article>
+</SiteLayout>

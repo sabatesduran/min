@@ -1,0 +1,17 @@
+---
+const isBuilder = Astro.url.pathname.startsWith('/crea');
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="wordmark" href="/" aria-label="min, pàgina principal">
+      <img src="/images/brand/min-logo.png" width="952" height="464" alt="" />
+    </a>
+    <nav class="site-nav" aria-label="Navegació principal">
+      <a href="/#app">Com funciona</a>
+      <a href="/#descarrega">Descarrega</a>
+      <a href="/privacitat/">Privacitat</a>
+    </nav>
+    <a class="site-header__action" href={isBuilder ? '/' : '/crea/'}>{isBuilder ? 'Torna al producte' : 'Crea el teu min'}</a>
+  </div>
+</header>

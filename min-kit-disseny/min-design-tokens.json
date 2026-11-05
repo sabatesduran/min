@@ -1,0 +1,20 @@
+{
+  "name": "min",
+  "version": "1.0",
+  "colors": {
+    "brand": "#3947F5", "now": "#D8FA67", "paper": "#F6F4EC", "ink": "#20221F",
+    "secondary": "#6C706A", "surface": "#EAEDE4", "line": "#DEDFD6", "lilac": "#E7E4FF", "peach": "#F8DCCA",
+    "dark": { "canvas": "#191C1C", "surface": "#252A26", "text": "#F5F3EB", "secondary": "#ADB3AA", "line": "#343A35" }
+  },
+  "spacing": [4, 8, 12, 16, 20, 24, 32, 40],
+  "radii": { "input": 12, "button": 16, "highlight": 24, "sheet": 28, "pill": 999 },
+  "typography": {
+    "family": "System", "timeFamily": "Platform monospace, tabular figures",
+    "sizes": { "caption": 12, "metadata": 14, "body": 16, "label": 20, "title": 26, "hero": 34, "display": 42 },
+    "weights": { "body": "400", "emphasis": "600", "heading": "700" },
+    "displayTracking": -1.2
+  },
+  "layout": { "gutter": 20, "minimumTouchIOS": 44, "minimumTouchAndroid": 48, "contentMaxWidth": 680 },
+  "motion": { "selectionMs": 160, "sheetMs": 220, "respectReducedMotion": true },
+  "accessibility": { "minimumContrast": "WCAG AA", "supportsTextScaling": true, "neverColorOnly": true }
+}

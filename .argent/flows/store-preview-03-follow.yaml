@@ -1,0 +1,16 @@
+executionPrerequisite: La demo és oberta a la vista Agenda al principi del dia.
+steps:
+  - tool: launch-app
+    args: { bundleId: com.dsd.min }
+  - wait: 800
+  - tap: { text: Obre el local i repassa el pla del dia }
+  - await: { visible: { text: Responsables }, timeout: 15000 }
+  - await: { idle: true, stableFor: 400, timeout: 9000 }
+  - wait: 1200
+  - scroll-to:
+      target: { text: Obre el local i el magatzem }
+      direction: down
+  - await: { visible: { text: Obre el local i el magatzem }, timeout: 15000 }
+  - wait: 800
+  - tap: { text: Obre el local i el magatzem }
+  - wait: 1200

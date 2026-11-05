@@ -1,0 +1,8 @@
+{
+  "contactFirstName": "Nom",
+  "contactLastName": "Cognoms",
+  "contactPhone": "+00000000000",
+  "contactEmail": "mantenidor@example.com",
+  "demoAccountRequired": false,
+  "notes": "Descriu aquí com pot revisar-se l’app sense dades ni comptes reals."
+}

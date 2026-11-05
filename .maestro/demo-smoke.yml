@@ -1,0 +1,12 @@
+appId: com.dsd.min
+name: Demo smoke test
+---
+- launchApp:
+    clearState: true
+- assertVisible: "El minut a minut de la colla, sempre a mà."
+- tapOn: "Prova la demo"
+- assertVisible: "Ara"
+- tapOn: "Agenda"
+- assertVisible: "Agenda"
+- tapOn: "Equip"
+- assertVisible: "Equip"

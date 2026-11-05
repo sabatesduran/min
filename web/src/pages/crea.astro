@@ -1,0 +1,22 @@
+---
+import MinBuilder from '../components/builder/MinBuilder';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import '../styles/builder.css';
+---
+
+<SiteLayout
+  title="Crea el teu min"
+  description="Crea i valida un minut a minut des del navegador, sense compte ni backend."
+>
+  <div class="builder-page">
+    <header class="container builder-intro">
+      <h1>Crea el teu min.</h1>
+      <p>Escriu l’horari, revisa’l al moment i descarrega un fitxer compatible amb l’app.</p>
+    </header>
+    <div class="container">
+      <MinBuilder client:only="react">
+        <p slot="fallback" class="builder-noscript">El generador necessita JavaScript per editar i validar el document. La resta de la web continua disponible sense scripts.</p>
+      </MinBuilder>
+    </div>
+  </div>
+</SiteLayout>

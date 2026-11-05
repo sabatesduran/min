@@ -1,0 +1,15 @@
+appId: com.dsd.min
+name: Create an event
+---
+- launchApp:
+    clearState: true
+- tapOn: "Crea un esdeveniment"
+- assertVisible: "Crea el teu min"
+- tapOn: "Nom de l’esdeveniment"
+- inputText: "Jornada de prova"
+- tapOn: "Entitat"
+- inputText: "Colla de prova"
+- hideKeyboard
+- tapOn: "Crea l’esdeveniment"
+- assertVisible: "Prepara l’esdeveniment"
+- assertVisible: "Jornada de prova"

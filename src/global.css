@@ -1,0 +1,35 @@
+/* Hallmark · shape: app screen · genre: playful · theme: project system · screen: mobile schedule tool · signature: temporal rail · nav: native bottom tabs · modes: light+dark · v2.0.0 */
+/* Hallmark · pre-emit critique: P5 H4 E4 S5 R4 V4 · weakest: E, the raster wordmark needed a separate compact app symbol; added the lime spark asset */
+/* Hallmark · waive 26b · Expo Router renders the bottom tabs as native controls · Native tabs use platform press feedback; CSS pseudo states do not apply to the app screen. */
+
+:root {
+  --color-paper: #f6f4ec;
+  --color-ink: #20221f;
+  --color-focus: #3947f5;
+  --font-body: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color-scheme: light dark;
+}
+
+html,
+body {
+  overflow-x: clip;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

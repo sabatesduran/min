@@ -1,0 +1,164 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+  title="min, el minut a minut de la colla"
+  description="Prepara, comparteix i segueix l’horari, les tasques i les persones d’un esdeveniment, també sense cobertura."
+>
+  <section class="hero">
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <h1>Tot al seu moment.</h1>
+        <p class="lead">L’horari, les tasques i la colla, sempre a mà.</p>
+        <div class="hero__actions">
+          <a class="button" href="/crea/">Crea el teu min</a>
+          <a class="button button--quiet" href="#app">Mira l’app</a>
+        </div>
+      </div>
+      <figure class="hero__visual" data-slot="hero" data-kind="product" data-alt="Pantalla Ara de min amb una tasca actual i la següent">
+        <img src="/images/product/now.png" width="1350" height="2760" alt="Pantalla Ara de min en un iPhone 17 Pro blau, amb les tasques previstes ara i després" fetchpriority="high" />
+      </figure>
+    </div>
+  </section>
+
+  <section class="section section--blue" id="app">
+    <div class="container split split--reverse">
+      <figure class="product-figure" data-slot="agenda" data-kind="product" data-alt="Agenda real de min amb el rail temporal del dia">
+        <img src="/images/product/agenda.png" width="1350" height="2760" alt="Agenda de min ordenada per hores en un iPhone 17 Pro blau" loading="lazy" />
+      </figure>
+      <div class="split__copy">
+        <h2>El fil del dia.</h2>
+        <p>Les simultànies conviuen, les tasques de matinada no es perden i cada “En acabar” continua lligat a la seva activitat.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container moments">
+      <figure class="product-figure" data-slot="detail" data-kind="product" data-alt="Detall real d’una tasca de min amb responsables i checklist">
+        <img src="/images/product/detail.png" width="1350" height="2760" alt="Detall d’una tasca amb lloc, responsables i checklist en un iPhone 17 Pro blau" loading="lazy" />
+      </figure>
+      <div>
+        <h2>On, quan i amb qui.</h2>
+        <dl class="moment-rows">
+          <div class="moment-row">
+            <dt>Ara</dt>
+            <dd>Mostra tot el que està previst en aquest instant.</dd>
+          </div>
+          <div class="moment-row">
+            <dt>Després</dt>
+            <dd>Agrupa el pròxim moment sense amagar tasques simultànies.</dd>
+          </div>
+          <div class="moment-row">
+            <dt>Per a mi</dt>
+            <dd>Filtra assignacions personals, d’equip i de tota la colla.</dd>
+          </div>
+          <div class="moment-row">
+            <dt>Sense cobertura</dt>
+            <dd>L’horari desat continua disponible quan la xarxa falla.</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--lime">
+    <div class="container">
+      <h2>Passa el min.</h2>
+      <div class="file-flow" aria-label="Flux per compartir un min">
+        <article class="file-flow__step">
+          <span>1</span>
+          <h3>Prepara</h3>
+          <p>Ordena les hores, les persones i les instruccions.</p>
+        </article>
+        <article class="file-flow__step">
+          <span>2</span>
+          <h3>Comparteix</h3>
+          <p>Envia una revisió com a fitxer o PDF.</p>
+        </article>
+        <article class="file-flow__step">
+          <span>3</span>
+          <h3>Segueix</h3>
+          <p>Cada persona consulta la seva còpia i sap quina revisió té.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="crea">
+    <div class="container workbench-promo">
+      <div class="workbench-promo__copy">
+        <h2>Crea’l al navegador.</h2>
+        <p>L’esborrany només es desa en aquest navegador.</p>
+        <div class="workbench-promo__ai">
+          <h3>Comença amb la teva IA.</h3>
+          <p>Copia les instruccions, adjunta l’horari i obre el `.minut.json` que et retorni.</p>
+          <div class="workbench-promo__actions">
+            <a class="button" href="/crea/#amb-ia">Prepara’l amb una IA</a>
+            <a class="button button--quiet" href="/crea/">Edita’l a mà</a>
+          </div>
+        </div>
+      </div>
+      <img class="workbench-promo__image" src="/images/product/builder.png" width="4260" height="2840" alt="Generador web de min amb el formulari i la previsualització de l’agenda en un MacBook Pro" loading="lazy" />
+    </div>
+  </section>
+
+  <section class="section section--download" id="descarrega" aria-labelledby="descarrega-title">
+    <div class="container download-band">
+      <div class="download-band__copy">
+        <span class="download-band__eyebrow">iOS i Android</span>
+        <h2 id="descarrega-title">Descarrega min.</h2>
+        <p>Prova la beta per a iPhone i iPad amb TestFlight. L’app d’Android arribarà aviat.</p>
+      </div>
+      <div class="store-badges" aria-label="Disponibilitat de les apps" data-slot="store-downloads" data-kind="product" data-alt="Accés a la beta d’iOS amb TestFlight i distintiu de Google Play marcat com a properament">
+        <a class="store-badge store-badge--testflight" href="https://testflight.apple.com/join/yf4rrrw6" target="_blank" rel="noopener" aria-label="Prova la beta de min per a iOS amb TestFlight">
+          <span class="store-badge__header">
+            <span class="store-badge__status">iPhone i iPad</span>
+            <span class="store-badge__arrow" aria-hidden="true">↗</span>
+          </span>
+          <span class="testflight-offer" aria-hidden="true">
+            <img src="/images/stores/testflight-icon.png" width="192" height="192" alt="" />
+            <span class="testflight-offer__copy">
+              <span>Beta amb TestFlight</span>
+              <strong>Prova min ara</strong>
+            </span>
+          </span>
+          <span class="store-badge__note">Obre la invitació pública i instal·la la beta.</span>
+        </a>
+        <div class="store-badge store-badge--coming" aria-label="Google Play, properament">
+          <span class="store-badge__header">
+            <span class="store-badge__status">Android</span>
+            <span class="store-badge__soon">Properament</span>
+          </span>
+          <img class="store-badge__google" src="/images/stores/google-play-badge-ca.png" width="646" height="250" alt="Disponible a Google Play" />
+          <span class="store-badge__note">La versió per a Android arribarà després de la beta.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--faq">
+    <div class="container faq">
+      <h2>Abans de començar.</h2>
+      <div class="faq__list">
+        <details open>
+          <summary>Cal crear un compte?</summary>
+          <p>No. Els documents es desen al dispositiu i es comparteixen explícitament.</p>
+        </details>
+        <details>
+          <summary>Funciona sense internet?</summary>
+          <p>Sí. Un document desat es pot consultar sense cobertura.</p>
+        </details>
+        <details>
+          <summary>La web envia el document a una IA?</summary>
+          <p>No. Tu tries la IA i li adjuntes l’horari original.</p>
+        </details>
+        <details>
+          <summary>Com arriben els canvis a la colla?</summary>
+          <p>Qui prepara el min publica i comparteix cada revisió.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</SiteLayout>

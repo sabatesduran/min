@@ -1,0 +1,9 @@
+executionPrerequisite: La demo és oberta a la vista Ara.
+steps:
+  - tool: launch-app
+    args: { bundleId: com.dsd.min }
+  - wait: 1000
+  - tap: { text: Agenda }
+  - await: { visible: { text: 'Tot el dia, en ordre' }, timeout: 15000 }
+  - await: { idle: true, stableFor: 400, timeout: 9000 }
+  - wait: 2000

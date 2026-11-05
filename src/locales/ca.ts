@@ -1,0 +1,61 @@
+export const ca = {
+  tabs: {
+    now: 'Ara',
+    agenda: 'Agenda',
+    people: 'Equip',
+    events: 'Esdeveniments',
+  },
+  common: {
+    close: 'Tanca',
+    cancel: 'Cancel·la',
+    save: 'Desa',
+    delete: 'Elimina',
+    edit: 'Edita',
+    create: 'Crea',
+    continue: 'Continua',
+    retry: 'Torna-ho a provar',
+    search: 'Cerca',
+    loading: 'Carregant',
+    notAssigned: 'Per assignar',
+    after: 'En acabar',
+    all: 'Tothom',
+    mine: 'Les meves',
+    wholeGroup: 'Tota la colla',
+  },
+  welcome: {
+    title: 'El minut a minut de la colla, sempre a mà.',
+    create: 'Prepara un esdeveniment',
+    open: 'Obre un horari compartit',
+    foot: 'Sense compte. Disponible sense connexió.',
+  },
+  now: {
+    helloPerson: (name: string) => `Som-hi, ${name}`,
+    helloGroup: 'Som-hi, colla',
+    according: 'Ara, segons l’horari',
+    next: 'Després',
+    none: 'No hi ha cap activitat prevista ara mateix.',
+    noNext: 'Tot el que tenies previst ja ha passat.',
+    upcoming: 'Encara no ha començat',
+    finished: 'Finalitzat',
+    live: 'En curs segons l’horari',
+  },
+  agenda: {
+    title: 'El fil del dia',
+    backToNow: 'Torna a ara',
+    empty: 'Aquest min encara no té tasques.',
+  },
+  people: {
+    title: 'Equip',
+    noIdentity: 'Encara no has indicat qui ets.',
+    choose: 'Tria qui ets',
+    thisIsMe: 'Aquesta persona soc jo',
+  },
+  events: {
+    title: 'Esdeveniments',
+    empty: 'Encara no tens cap esdeveniment desat.',
+    import: 'Importa un fitxer',
+    new: 'Crea un min',
+  },
+} as const;
+
+export type CatalanStrings = typeof ca;

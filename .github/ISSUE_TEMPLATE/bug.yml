@@ -1,0 +1,41 @@
+name: Error
+description: Informa d’un comportament incorrect de min
+title: "[Error]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: No adjuntis documents reals amb dades personals.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Què ha passat?
+      description: Explica què esperaves i què ha passat realment.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passos per reproduir-ho
+      placeholder: "1. Obre…\n2. Prem…\n3. Observa…"
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Plataforma
+      options: [iOS, Android, Web]
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Versió de min, dispositiu i versió del sistema.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context addicional
+      description: Permisos, connectivitat, mode clar/fosc o text gran.

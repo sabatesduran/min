@@ -1,0 +1,12 @@
+steps:
+  - launch: { native: com.dsd.min }
+  - await: { visible: { text: Crea un esdeveniment }, timeout: 15000 }
+  - tap: { text: Crea un esdeveniment }
+  - await: { visible: { text: Crea el teu min }, timeout: 15000 }
+  - when: { visible: { text: Try out your stylus } }
+    steps:
+      - tap: { text: Cancel }
+      - await: { hidden: { text: Try out your stylus }, timeout: 15000 }
+  - tap: { text: Ja tens un document? Converteix-lo amb IA }
+  - await: { visible: { text: Converteix un document amb IA }, timeout: 15000 }
+  - await: { idle: true, stableFor: 400, timeout: 9000 }

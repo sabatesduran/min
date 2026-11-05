@@ -1,0 +1,27 @@
+name: Proposta
+description: Proposa una millora centrada en un problema d’usuari
+title: "[Proposta]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Quin problema resol?
+      description: Explica qui té el problema i en quin moment d’un esdeveniment.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Com podria funcionar?
+    validations:
+      required: true
+  - type: checkboxes
+    id: principles
+    attributes:
+      label: Principis
+      options:
+        - label: Pot funcionar sense compte ni backend obligatori.
+          required: true
+        - label: No envia dades sense una acció explícita.
+          required: true
