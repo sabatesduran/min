@@ -16,11 +16,9 @@ import { MinIcon } from '@/ui/components/icon';
 import { MinText } from '@/ui/components/min-text';
 import { NavigationHeader } from '@/ui/components/navigation-header';
 import { Screen } from '@/ui/components/screen';
+import { accentLabels, accents, colorForAccent, inkForAccent } from '@/ui/accent';
 import { radius, spacing } from '@/ui/tokens';
 import { useMinTheme } from '@/ui/use-min-theme';
-
-const accents: Accent[] = ['blue', 'lime', 'lilac', 'peach'];
-const accentLabels: Record<Accent, string> = { blue: 'Blau', lime: 'Llima', lilac: 'Lila', peach: 'Préssec' };
 
 export default function EditEventScreen() {
   const { selected, saveDraft } = useAppData();
@@ -36,7 +34,6 @@ export default function EditEventScreen() {
   const [saving, setSaving] = useState(false);
   if (!base) return <Screen><MinText>No hi ha cap min seleccionat.</MinText></Screen>;
   if (!canEditDocument(selected)) return <Screen><NavigationHeader title="Dades del dia" /><EmptyState title="Còpia de consulta" body="Duplica l’esdeveniment abans de modificar-ne les dades." /></Screen>;
-  const accentColor = (value: Accent) => value === 'lime' ? colors.now : value === 'lilac' ? colors.lilac : value === 'peach' ? colors.peach : colors.brand;
   const submit = async () => {
     if (!title.trim() || !organization.trim()) { Alert.alert('Falten dades', 'El nom i l’entitat són obligatoris.'); return; }
     if (endsAt <= startsAt) { Alert.alert('Finestra incorrecta', 'El final ha de ser posterior a l’inici.'); return; }
@@ -59,8 +56,8 @@ export default function EditEventScreen() {
         <DateTimeField label="Acaba" value={endsAt} onChange={setEndsAt} />
         <FormField label="Notes generals" value={notes} onChangeText={setNotes} multiline />
         <View style={styles.accentGroup}><MinText variant="metadata" style={styles.label}>Color del document</MinText><View style={styles.accents}>{accents.map((value) => (
-          <Pressable key={value} accessibilityRole="radio" accessibilityLabel={`Color ${accentLabels[value]}`} accessibilityState={{ checked: accent === value }} onPress={() => setAccent(value)} style={[styles.accent, { backgroundColor: accentColor(value), borderColor: accent === value ? colors.text : colors.line }]}>
-            {accent === value ? <MinIcon name="check" size={20} color={value === 'blue' ? colors.brandInk : colors.text} /> : null}
+          <Pressable key={value} accessibilityRole="radio" accessibilityLabel={`Color ${accentLabels[value]}`} accessibilityState={{ checked: accent === value }} onPress={() => setAccent(value)} style={[styles.accent, { backgroundColor: colorForAccent(value, colors), borderColor: accent === value ? colors.text : colors.line }]}>
+            {accent === value ? <MinIcon name="check" size={20} color={inkForAccent(value, colors)} /> : null}
           </Pressable>
         ))}</View><MinText variant="caption" style={{ color: colors.secondary }}>Seleccionat: {accentLabels[accent]}</MinText></View>
       </View>

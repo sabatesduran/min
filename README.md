@@ -132,7 +132,7 @@ El kit de disseny original, els tokens i l’especificació de pantalles viuen a
 Tots els documents tenen un nom visible abans del sufix `.minut.json`, per exemple `correfoc-2026.minut.json`. min no genera fitxers anomenats simplement `.minut.json`, que alguns sistemes tractarien com a ocults.
 
 - MIME: `application/vnd.min.document+json`
-- UTI: `dev.min.document`
+- UTI: `com.dsd.min.document`
 - Contracte actual: `schemaVersion: 1`
 - Contracte executable: [`src/domain/schema.ts`](src/domain/schema.ts)
 

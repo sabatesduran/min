@@ -2,6 +2,7 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 
 import { useAppData } from '@/features/app-data/app-data-provider';
+import { colorForAccent } from '@/ui/accent';
 import { spacing } from '@/ui/tokens';
 import { useMinTheme } from '@/ui/use-min-theme';
 
@@ -13,8 +14,7 @@ export function AppHeader({ title }: { title?: string }) {
   const { colors } = useMinTheme();
   const canChangeDocument = documents.filter((item) => item.origin !== 'demo').length > 1;
   const dirty = Boolean(selected?.draft && JSON.stringify(selected.draft) !== JSON.stringify(selected.document));
-  const accent = selected?.document.event.accent;
-  const accentColor = accent === 'lime' ? colors.now : accent === 'lilac' ? colors.lilac : accent === 'peach' ? colors.peach : colors.brand;
+  const accentColor = colorForAccent(selected?.document.event.accent, colors);
   const context = (
     <>
       <Image source={require('../../../assets/images/logo-transparent.png')} resizeMode="contain" style={styles.logo} accessibilityLabel="min" />

@@ -166,6 +166,7 @@ Android incorpora avisos i widgets equivalents dins de les capacitats del sistem
 | surface.soft | #EAEDE4 | Controls, agrupacions discretes |
 | accent.lilac | #E7E4FF | Identitat i suport |
 | accent.peach | #F8DCCA | Informació contextual i sense connexió |
+| accent.red | #C83C32 | Identitat d’esdeveniment amb text clar |
 | dark.canvas | #191C1C | Fons nocturn |
 | dark.surface | #252A26 | Superfícies nocturnes |
 

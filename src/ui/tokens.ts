@@ -11,6 +11,7 @@ export const palette = {
   line: '#D6D9CF',
   lilac: '#E7E4FF',
   peach: '#F8DCCA',
+  red: '#C83C32',
   error: '#A7352A',
   errorSoft: '#F8DDD8',
   warning: '#765300',
@@ -27,6 +28,7 @@ export const palette = {
     line: '#504C3F',
     brand: '#7D87FF',
     lime: '#C7E95C',
+    red: '#FF8A80',
     error: '#FFB4A9',
     warning: '#FFD977',
     success: '#93D7A5',
@@ -75,6 +77,8 @@ export type ThemeColors = {
   nowInk: string;
   lilac: string;
   peach: string;
+  red: string;
+  redInk: string;
   error: string;
   errorSoft: string;
   warning: string;
@@ -97,6 +101,8 @@ const light: ThemeColors = {
   nowInk: palette.ink,
   lilac: palette.lilac,
   peach: palette.peach,
+  red: palette.red,
+  redInk: palette.whiteInk,
   error: palette.error,
   errorSoft: palette.errorSoft,
   warning: palette.warning,
@@ -119,6 +125,8 @@ const dark: ThemeColors = {
   nowInk: palette.dark.canvas,
   lilac: '#3D3858',
   peach: '#51392E',
+  red: palette.dark.red,
+  redInk: palette.dark.canvas,
   error: palette.dark.error,
   errorSoft: '#4D2925',
   warning: palette.dark.warning,

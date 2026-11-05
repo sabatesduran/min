@@ -38,7 +38,7 @@ const personSchema = z.strictObject({
   id: idSchema,
   name: z.string().trim().min(1).max(limits.name),
   disambiguation: z.string().trim().max(limits.name).optional(),
-  initialsColor: z.enum(['blue', 'lime', 'lilac', 'peach']).optional(),
+  initialsColor: z.enum(['blue', 'lime', 'lilac', 'peach', 'red']).optional(),
 });
 
 const teamSchema = z.strictObject({
@@ -98,7 +98,7 @@ export const sharedDocumentSchema = z
       endsAt: instantSchema,
       timeZone: timeZoneSchema,
       notes: z.string().max(limits.notes).optional(),
-      accent: z.enum(['blue', 'lime', 'lilac', 'peach']),
+      accent: z.enum(['blue', 'lime', 'lilac', 'peach', 'red']),
     }),
     people: z.array(personSchema).max(500),
     teams: z.array(teamSchema).max(100),

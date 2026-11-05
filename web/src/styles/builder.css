@@ -234,7 +234,7 @@
 
 .accent-picker {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: var(--space-xs);
   margin: 0;
   padding: 0;
@@ -293,6 +293,11 @@
 
 .accent-picker label[data-accent="peach"] {
   background: var(--color-peach);
+}
+
+.accent-picker label[data-accent="red"] {
+  background: var(--color-red);
+  color: var(--color-red-ink);
 }
 
 .entity-section {

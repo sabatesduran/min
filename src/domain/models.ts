@@ -1,6 +1,6 @@
 export type ID = string;
 export type ISOInstant = string;
-export type Accent = 'blue' | 'lime' | 'lilac' | 'peach';
+export type Accent = 'blue' | 'lime' | 'lilac' | 'peach' | 'red';
 
 export type Person = {
   id: ID;

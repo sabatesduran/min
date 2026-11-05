@@ -17,7 +17,7 @@ Fitxer final
 - Fes servir dates ISO 8601 amb Z o desplaçament horari, per exemple 2026-11-04T18:30:00+01:00.
 - Fes servir una zona IANA vàlida, per exemple Europe/Madrid.
 - Usa revision 1 i schemaVersion 1. publishedAt és l’instant real en què generes la resposta.
-- Si no s’indica cap color, usa "blue". Els únics colors possibles són "blue", "lime", "lilac" i "peach".
+- Si no s’indica cap color, usa "blue". Els únics colors possibles són "blue", "lime", "lilac", "peach" i "red".
 
 Regles de dades
 - event.startsAt ha de ser anterior a event.endsAt.

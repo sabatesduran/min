@@ -5,6 +5,7 @@ import * as Sharing from 'expo-sharing';
 import type { SharedDocument, Task } from '@/domain/models';
 import { formatDateTime, formatTaskTime, personIdsForTask } from '@/domain/time';
 import { buildDocumentFileName } from '@/features/sharing/document-file-name';
+import { MIN_DOCUMENT_MIME_TYPE, MIN_DOCUMENT_UTI } from '@/features/sharing/document-type';
 
 function escapeHtml(value: string): string {
   return value.replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]!);
@@ -17,8 +18,8 @@ export async function shareDocumentFile(document: SharedDocument): Promise<strin
   await file.write(`${JSON.stringify(document, null, 2)}\n`);
   if (await Sharing.isAvailableAsync()) {
     await Sharing.shareAsync(file.uri, {
-      mimeType: 'application/vnd.min.document+json',
-      UTI: 'dev.min.document',
+      mimeType: MIN_DOCUMENT_MIME_TYPE,
+      UTI: MIN_DOCUMENT_UTI,
       dialogTitle: 'Comparteix aquest min',
     });
   }

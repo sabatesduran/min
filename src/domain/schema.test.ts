@@ -8,6 +8,12 @@ describe('sharedDocumentSchema', () => {
     expect(safeParseSharedDocument(makeDocument()).success).toBe(true);
   });
 
+  it('accepta el vermell com a color d’accent', () => {
+    const document = makeDocument();
+    document.event.accent = 'red';
+    expect(safeParseSharedDocument(document).success).toBe(true);
+  });
+
   it('rebutja referències inexistents', () => {
     const document = makeDocument();
     document.tasks[0]!.personIds = ['20000000-0000-4000-8000-000000000001'];

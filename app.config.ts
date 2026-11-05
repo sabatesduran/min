@@ -1,7 +1,9 @@
 import type { ExpoConfig } from 'expo/config';
 
+import documentType from './document-type.json';
+
 const appId = 'com.dsd.min';
-const documentType = 'com.dsd.min.document';
+const { jsonUti: JSON_DOCUMENT_UTI, mimeType: MIN_DOCUMENT_MIME_TYPE, uti: MIN_DOCUMENT_UTI } = documentType;
 
 const config: ExpoConfig = {
   name: 'min',
@@ -13,7 +15,7 @@ const config: ExpoConfig = {
   userInterfaceStyle: 'automatic',
   ios: {
     bundleIdentifier: appId,
-    buildNumber: '1',
+    buildNumber: '2',
     supportsTablet: true,
     entitlements: {
       'com.apple.security.application-groups': [`group.${appId}`],
@@ -25,17 +27,17 @@ const config: ExpoConfig = {
           CFBundleTypeName: 'Document min',
           CFBundleTypeRole: 'Viewer',
           LSHandlerRank: 'Owner',
-          LSItemContentTypes: [documentType],
+          LSItemContentTypes: [MIN_DOCUMENT_UTI, JSON_DOCUMENT_UTI],
         },
       ],
       UTExportedTypeDeclarations: [
         {
-          UTTypeIdentifier: documentType,
+          UTTypeIdentifier: MIN_DOCUMENT_UTI,
           UTTypeDescription: 'Document min',
           UTTypeConformsTo: ['public.json', 'public.data'],
           UTTypeTagSpecification: {
             'public.filename-extension': ['minut', 'minut.json'],
-            'public.mime-type': ['application/vnd.min.document+json'],
+            'public.mime-type': [MIN_DOCUMENT_MIME_TYPE],
           },
         },
       ],
@@ -56,8 +58,8 @@ const config: ExpoConfig = {
         autoVerify: false,
         category: ['BROWSABLE', 'DEFAULT'],
         data: [
-          { scheme: 'content', mimeType: 'application/vnd.min.document+json' },
-          { scheme: 'file', mimeType: 'application/vnd.min.document+json' },
+          { scheme: 'content', mimeType: MIN_DOCUMENT_MIME_TYPE },
+          { scheme: 'file', mimeType: MIN_DOCUMENT_MIME_TYPE },
         ],
       },
     ],
@@ -78,7 +80,7 @@ const config: ExpoConfig = {
     ],
     'expo-font',
     ['expo-localization', { supportedLocales: ['ca'] }],
-    ['expo-file-system', { enableFileSharing: true, supportsOpeningDocumentsInPlace: true }],
+    ['expo-file-system', { enableFileSharing: true, supportsOpeningDocumentsInPlace: false }],
     ['expo-notifications', { color: '#3947F5', enableRemoteNotifications: false }],
     ['expo-sqlite', { enableFTS: true }],
     [

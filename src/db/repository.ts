@@ -198,12 +198,15 @@ export async function assessImport(db: SQLiteDatabase, input: unknown): Promise<
   const stored = await getStoredDocument(db, incoming.documentId);
   if (!stored) return { kind: 'new', incoming, hash };
   const current = stored.document;
+  const knownRevision = await db.getFirstAsync<{ content_hash: string }>(
+    'SELECT content_hash FROM revisions WHERE document_id = ? AND content_hash = ? LIMIT 1',
+    incoming.documentId,
+    hash,
+  );
+  if (knownRevision) return { kind: 'duplicate', current, incoming, hash };
   if (incoming.revision > current.revision) return { kind: 'update', current, incoming, hash };
   if (incoming.revision < current.revision) return { kind: 'older', current, incoming, hash };
-  const currentHash = await contentHash(current);
-  return currentHash === hash
-    ? { kind: 'duplicate', current, incoming, hash }
-    : { kind: 'conflict', current, incoming, hash };
+  return { kind: 'conflict', current, incoming, hash };
 }
 
 export async function applyImport(db: SQLiteDatabase, assessment: ImportAssessment): Promise<void> {

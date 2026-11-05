@@ -21,6 +21,8 @@
   --color-rule: oklch(88% 0.014 120.3);
   --color-lilac: oklch(92.9% 0.036 290.8);
   --color-peach: oklch(91.3% 0.039 54.8);
+  --color-red: #C83C32;
+  --color-red-ink: var(--color-brand-ink);
   --color-error: oklch(49.6% 0.152 29.1);
   --color-error-soft: oklch(91.8% 0.031 30.2);
   --color-warning: oklch(46.8% 0.097 80.4);

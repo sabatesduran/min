@@ -15,6 +15,7 @@ import { MinIcon } from '@/ui/components/icon';
 import { MinText } from '@/ui/components/min-text';
 import { Screen } from '@/ui/components/screen';
 import { SegmentedControl } from '@/ui/components/segmented-control';
+import { colorForAccent } from '@/ui/accent';
 import { radius, spacing } from '@/ui/tokens';
 import { useMinTheme } from '@/ui/use-min-theme';
 
@@ -84,8 +85,7 @@ export default function EventsScreen() {
             {visible.map((item) => {
               const document = item.document;
               const status = eventStatus(document.event, now);
-              const accent = document.event.accent;
-              const accentColor = accent === 'lime' ? colors.now : accent === 'lilac' ? colors.lilac : accent === 'peach' ? colors.peach : colors.brand;
+              const accentColor = colorForAccent(document.event.accent, colors);
               const selected = document.documentId === selectedDocumentId;
               const dirty = Boolean(item.draft && JSON.stringify(item.draft) !== JSON.stringify(item.document));
               return (

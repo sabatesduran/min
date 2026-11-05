@@ -160,12 +160,14 @@ describe('repositori SQLite', () => {
     expect(assessment.kind).toBe('update');
     await applyImport(db, assessment);
     expect((await getStoredDocument(db, document.documentId))?.document.revision).toBe(2);
+    expect((await assessImport(db, document)).kind).toBe('duplicate');
 
     const conflict = { ...update, event: { ...update.event, title: 'Mateixa revisió, altre contingut' } };
     const conflictAssessment = await assessImport(db, conflict);
     expect(conflictAssessment.kind).toBe('conflict');
     await applyImport(db, conflictAssessment);
     expect(await listRevisions(db, document.documentId)).toHaveLength(3);
+    expect((await assessImport(db, conflict)).kind).toBe('duplicate');
 
     const revisions = await listRevisions(db, document.documentId);
     const duplicateId = await duplicateRevision(db, document.documentId, revisions[0]!.contentHash);

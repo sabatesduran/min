@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { SharedDocument } from '@/domain/models';
 import { safeParseSharedDocument } from '@/domain/schema';
 import { buildAiImportPrompt } from '@/features/ai/build-ai-prompt';
+import { MIN_DOCUMENT_MIME_TYPE } from '@/features/sharing/document-type';
 
 import {
   addBuilderTask,
@@ -211,7 +212,7 @@ export default function MinBuilder() {
   const download = () => {
     const document = validate();
     if (!document) return;
-    const blob = new Blob([`${JSON.stringify(document, null, 2)}\n`], { type: 'application/vnd.min.document+json' });
+    const blob = new Blob([`${JSON.stringify(document, null, 2)}\n`], { type: MIN_DOCUMENT_MIME_TYPE });
     const url = URL.createObjectURL(blob);
     const anchor = window.document.createElement('a');
     anchor.href = url;
@@ -286,7 +287,7 @@ export default function MinBuilder() {
             id="import-min"
             tabIndex={-1}
             type="file"
-            accept=".json,.minut.json,application/json,application/vnd.min.document+json"
+            accept={`.json,.minut.json,application/json,${MIN_DOCUMENT_MIME_TYPE}`}
             onChange={(event) => {
               const file = event.target.files?.[0];
               if (file) void importFile(file);
@@ -334,10 +335,10 @@ export default function MinBuilder() {
                 </label>
                 <fieldset className="accent-picker">
                   <legend>Color del document</legend>
-                  {(['blue', 'lime', 'lilac', 'peach'] as const).map((accent) => (
+                  {(['blue', 'lime', 'lilac', 'peach', 'red'] as const).map((accent) => (
                     <label key={accent} data-accent={accent}>
                       <input type="radio" name="accent" value={accent} checked={draft.accent === accent} onChange={() => updateDraft('accent', accent)} />
-                      {accent === 'blue' ? 'Blau' : accent === 'lime' ? 'Llima' : accent === 'lilac' ? 'Lila' : 'Préssec'}
+                      {accent === 'blue' ? 'Blau' : accent === 'lime' ? 'Llima' : accent === 'lilac' ? 'Lila' : accent === 'peach' ? 'Préssec' : 'Vermell'}
                     </label>
                   ))}
                 </fieldset>

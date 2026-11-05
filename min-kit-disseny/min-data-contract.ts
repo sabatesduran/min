@@ -21,7 +21,7 @@ export interface SharedDocument {
   schemaVersion: 1; documentId: ID; revision: number; publishedAt: ISOInstant;
   event: {
     title: string; organization: string; startsAt: ISOInstant; endsAt: ISOInstant;
-    timeZone: string; notes?: string; accent: 'blue' | 'lime' | 'lilac' | 'peach';
+    timeZone: string; notes?: string; accent: 'blue' | 'lime' | 'lilac' | 'peach' | 'red';
   };
   people: Person[]; teams: Team[]; tasks: Task[];
 }

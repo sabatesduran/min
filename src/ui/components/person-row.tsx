@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 
 import type { Person } from '@/domain/models';
+import { colorForAccent, inkForAccent } from '@/ui/accent';
 import { radius, spacing } from '@/ui/tokens';
 import { useMinTheme } from '@/ui/use-min-theme';
 
@@ -18,8 +19,8 @@ function initials(name: string): string {
 
 export function PersonRow({ person, isMe, taskCount }: { person: Person; isMe: boolean; taskCount: number }) {
   const { colors } = useMinTheme();
-  const avatarColor = person.initialsColor === 'lime' ? colors.now : person.initialsColor === 'peach' ? colors.peach : person.initialsColor === 'lilac' ? colors.lilac : colors.brand;
-  const avatarInk = person.initialsColor === 'blue' || !person.initialsColor ? colors.brandInk : colors.text;
+  const avatarColor = colorForAccent(person.initialsColor, colors);
+  const avatarInk = inkForAccent(person.initialsColor, colors);
   return (
     <Pressable
       accessibilityRole="button"

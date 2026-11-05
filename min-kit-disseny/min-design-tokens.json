@@ -3,7 +3,7 @@
   "version": "1.0",
   "colors": {
     "brand": "#3947F5", "now": "#D8FA67", "paper": "#F6F4EC", "ink": "#20221F",
-    "secondary": "#6C706A", "surface": "#EAEDE4", "line": "#DEDFD6", "lilac": "#E7E4FF", "peach": "#F8DCCA",
+    "secondary": "#6C706A", "surface": "#EAEDE4", "line": "#DEDFD6", "lilac": "#E7E4FF", "peach": "#F8DCCA", "red": "#C83C32",
     "dark": { "canvas": "#191C1C", "surface": "#252A26", "text": "#F5F3EB", "secondary": "#ADB3AA", "line": "#343A35" }
   },
   "spacing": [4, 8, 12, 16, 20, 24, 32, 40],
