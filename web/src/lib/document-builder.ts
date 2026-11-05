@@ -2,6 +2,7 @@ import { Temporal } from '@js-temporal/polyfill';
 
 import type { Accent, SharedDocument, Task } from '@/domain/models';
 import { parseSharedDocument } from '@/domain/schema';
+import { buildDocumentFileName } from '@/features/sharing/document-file-name';
 
 export type BuilderPerson = {
   id: string;
@@ -191,12 +192,5 @@ export function documentToDraft(document: SharedDocument): BuilderDraft {
 }
 
 export function documentFileName(title: string): string {
-  const stem = title
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLocaleLowerCase('ca')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
-    .slice(0, 60) || 'document';
-  return `${stem}.minut.json`;
+  return buildDocumentFileName(title);
 }

@@ -58,7 +58,7 @@ export default function AiAssistantScreen() {
 
       <View style={styles.step}>
         <MinText variant="label">2. Importa el fitxer</MinText>
-        <MinText style={{ color: colors.secondary }}>Descarrega el fitxer .minut.json que et retorni la IA i obre’l aquí. min el validarà abans de desar res.</MinText>
+        <MinText style={{ color: colors.secondary }}>Descarrega el fitxer amb un nom com esdeveniment.minut.json que et retorni la IA i obre’l aquí. min el validarà abans de desar res.</MinText>
         <Button label="Importa el fitxer" icon="fileUp" variant="secondary" onPress={importResult} />
       </View>
     </Screen>

@@ -10,6 +10,7 @@ describe('prompt d’importació amb IA', () => {
     expect(prompt).toContain('fitxer descarregable');
     expect(prompt).toContain('"schemaVersion": 1');
     expect(prompt).toContain('"kind": "after"');
-    expect(prompt).toContain('.minut.json');
+    expect(prompt).toContain('correfoc-2026.minut.json');
+    expect(prompt).toContain('No l’anomenis simplement .minut.json');
   });
 });

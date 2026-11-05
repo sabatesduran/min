@@ -9,9 +9,9 @@ Objectiu
 - Si falta una dada imprescindible o hi ha una ambigüitat real, fes primer només les preguntes necessàries i espera la resposta. No generis el JSON fins que les dades imprescindibles siguin clares.
 
 Fitxer final
-- Crea i retorna un fitxer descarregable amb extensió .minut.json. Posa-li un nom curt relacionat amb l’esdeveniment, per exemple correfoc-2026.minut.json.
+- Crea i retorna un fitxer descarregable amb un nom acabat en .minut.json. Posa text abans del sufix, amb un nom curt relacionat amb l’esdeveniment, per exemple correfoc-2026.minut.json. No l’anomenis simplement .minut.json perquè alguns sistemes l’ocultarien.
 - El contingut del fitxer ha de ser exclusivament un únic objecte JSON vàlid, sense Markdown, explicacions ni blocs de codi.
-- No enganxis el JSON al xat si pots lliurar-lo com a fitxer. Si la teva interfície no permet crear fitxers, retorna només el JSON perquè es pugui desar amb l’extensió .minut.json.
+- No enganxis el JSON al xat si pots lliurar-lo com a fitxer. Si la teva interfície no permet crear fitxers, retorna només el JSON perquè es pugui desar amb un nom com esdeveniment.minut.json.
 - No afegeixis propietats que no apareguin al contracte.
 - Fes servir UUID v4 diferents per a documentId, organizationId i tots els id.
 - Fes servir dates ISO 8601 amb Z o desplaçament horari, per exemple 2026-11-04T18:30:00+01:00.
@@ -111,5 +111,5 @@ Contracte exacte
   ]
 }
 
-Elimina del fitxer final els exemples que no corresponguin al document. Conserva tasks, people i teams com a arrays buits si el document no en conté. Abans de lliurar-lo, comprova totes les referències, els UUID, les dates i que el fitxer sigui un .minut.json vàlid.`;
+Elimina del fitxer final els exemples que no corresponguin al document. Conserva tasks, people i teams com a arrays buits si el document no en conté. Abans de lliurar-lo, comprova totes les referències, els UUID, les dates i que el fitxer tingui un nom visible acabat en .minut.json i contingui un document vàlid.`;
 }

@@ -115,7 +115,7 @@ No hi ha botó «Retarda tot 15 minuts» compartit en aquesta entrega. Es poden 
 
 ## 8. Compartició i revisions
 
-El format d’intercanvi és un JSON UTF-8 amb extensió `.minut.json`, MIME `application/json` i associació de documents/deep links a l’app. L’enllaç intern `min://event/{documentId}` només identifica un document ja importat; no descarrega contingut ni serveix com a enllaç de compartició universal. No es genera un QR que aparenti descarregar un document quan no existeix cap allotjament.
+El format d’intercanvi és un JSON UTF-8 amb un nom visible acabat en `.minut.json`, per exemple `correfoc-2026.minut.json`, MIME `application/json` i associació de documents/deep links a l’app. L’enllaç intern `min://event/{documentId}` només identifica un document ja importat; no descarrega contingut ni serveix com a enllaç de compartició universal. No es genera un QR que aparenti descarregar un document quan no existeix cap allotjament.
 
 El full de compartir del sistema envia el fitxer per WhatsApp, AirDrop, correu o Fitxers. També es poden exportar un PDF general i un PDF personal amb data, entitat, revisió, notes i indicació que és una còpia. Una còpia de seguretat local inclou documents i preferències amb una advertència clara abans d’incloure-les; el fitxer compartit amb la colla exclou preferències personals.
 
@@ -237,7 +237,7 @@ No s’hi inclouen credencials ni serveis d’IA. No hi ha enviament de dades ni
 
 **17. Publicar revisions locals.** Separar esborrany de publicat, incrementar revisió, desar snapshot i calcular diff. Mostrar canvis abans de publicar. Exportar només una revisió coherent; mai una combinació parcial d’esborrany i dades publicades.
 
-**18. Implementar exportació i compartir.** Generar `.minut.json`, obrir el full natiu i registrar tipus de document. Exportar PDF general/personal amb notes i revisió; paginar sense separar hora de tasca. Preparar backup local opcional diferenciat del fitxer per al grup.
+**18. Implementar exportació i compartir.** Generar fitxers `<nom>.minut.json`, obrir el full natiu i registrar tipus de document. Exportar PDF general/personal amb notes i revisió; paginar sense separar hora de tasca. Preparar backup local opcional diferenciat del fitxer per al grup.
 
 **19. Implementar importació segura.** Capturar documents des del sistema i l’app. Validar abans d’escriure. Mostrar previsualització i diff; resoldre revisions antigues, duplicades i en conflicte. Aplicar dades en una transacció conservant preferències vàlides.
 

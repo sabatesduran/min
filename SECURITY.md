@@ -6,7 +6,7 @@ Les correccions de seguretat s’apliquen a la branca `main` i a l’última ver
 
 ## Informar d’un problema
 
-No publiquis una vulnerabilitat ni un document `.minut.json` real en una incidència pública. Contacta el mantenidor de forma privada a `sabatesduran@gmail.com` amb:
+No publiquis una vulnerabilitat ni un document real de min (`<nom>.minut.json`) en una incidència pública. Contacta el mantenidor de forma privada a `sabatesduran@gmail.com` amb:
 
 - versió i plataforma afectades;
 - impacte possible;

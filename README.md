@@ -29,7 +29,7 @@
 
 - **Local-first:** SQLite és la font de veritat i les dades es queden al dispositiu.
 - **Offline:** la consulta i l’edició no depenen de la cobertura.
-- **Compartició explícita:** els documents viatgen com a fitxers `.minut.json`; no hi ha sincronització automàtica.
+- **Compartició explícita:** els documents viatgen com a fitxers amb noms com `festa-major.minut.json`; no hi ha sincronització automàtica.
 - **Revisions segures:** una còpia rebuda és de consulta i s’ha de duplicar abans d’editar-la.
 - **Accessible:** admet text dinàmic, etiquetes accessibles i modes clar, fosc o del sistema.
 
@@ -48,14 +48,14 @@
 - Crear esdeveniments, tasques, equips, persones, funcions i dependències.
 - Revisar solapaments, assignacions, equips buits i funcions pendents.
 - Desar esborranys i publicar revisions explícites.
-- Importar i exportar `.minut.json`, generar PDF i crear còpies de seguretat.
+- Importar i exportar fitxers `<nom>.minut.json`, generar PDF i crear còpies de seguretat.
 - Preparar una primera estructura amb la IA que triï l’usuari, sense integrar cap proveïdor dins de min.
 
 ## Com funciona la compartició?
 
 1. Una persona crea o importa un esdeveniment.
 2. En revisa les dades i publica una revisió.
-3. Comparteix el fitxer `.minut.json` pels canals habituals del dispositiu.
+3. Comparteix el fitxer `<nom>.minut.json` pels canals habituals del dispositiu.
 4. La resta l’importa i veu sempre quina revisió té i quan la va rebre.
 
 No hi ha sincronització en segon pla. min no presenta mai una còpia com a actualitzada si no en té evidència.
@@ -127,7 +127,9 @@ metadata/      metadades públiques de l’App Store
 
 El kit de disseny original, els tokens i l’especificació de pantalles viuen a [`min-kit-disseny/`](min-kit-disseny/).
 
-## Format `.minut.json`
+## Format `<nom>.minut.json`
+
+Tots els documents tenen un nom visible abans del sufix `.minut.json`, per exemple `correfoc-2026.minut.json`. min no genera fitxers anomenats simplement `.minut.json`, que alguns sistemes tractarien com a ocults.
 
 - MIME: `application/vnd.min.document+json`
 - UTI: `dev.min.document`
@@ -142,7 +144,7 @@ min no integra cap model ni envia documents a tercers. La pantalla `/ai-assistan
 
 1. copia les instruccions;
 2. les enganxa a la IA i hi adjunta el document original;
-3. descarrega el `.minut.json` generat;
+3. descarrega el fitxer `<nom>.minut.json` generat;
 4. l’importa a min i el revisa abans de publicar-lo.
 
 El prompt prohibeix inventar dades i demana aclariments quan el document és ambigu. Un fitxer generat per IA no es considera mai una font de veritat.

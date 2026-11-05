@@ -4,23 +4,14 @@ import * as Sharing from 'expo-sharing';
 
 import type { SharedDocument, Task } from '@/domain/models';
 import { formatDateTime, formatTaskTime, personIdsForTask } from '@/domain/time';
-
-function safeName(value: string): string {
-  return value
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLocaleLowerCase('ca')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
-    .slice(0, 60) || 'document';
-}
+import { buildDocumentFileName } from '@/features/sharing/document-file-name';
 
 function escapeHtml(value: string): string {
   return value.replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]!);
 }
 
 export async function shareDocumentFile(document: SharedDocument): Promise<string> {
-  const file = new File(Paths.cache, `${safeName(document.event.title)}-v${document.revision}.minut.json`);
+  const file = new File(Paths.cache, buildDocumentFileName(document.event.title, document.revision));
   if (file.exists) file.delete();
   file.create({ intermediates: true });
   await file.write(`${JSON.stringify(document, null, 2)}\n`);
