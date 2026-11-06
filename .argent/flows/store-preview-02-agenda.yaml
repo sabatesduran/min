@@ -1,9 +1,11 @@
-executionPrerequisite: La demo és oberta a la vista Ara.
+executionPrerequisite: La demo és oberta a la vista Ara amb el filtre Totes.
 steps:
   - tool: launch-app
     args: { bundleId: com.dsd.min }
-  - wait: 1000
-  - tap: { text: Agenda }
-  - await: { visible: { text: 'Tot el dia, en ordre' }, timeout: 15000 }
+  - wait: 500
+  - tap: { text: Les meves }
+  - await: { visible: { text: Qui ets? }, timeout: 15000 }
+  - tap: { text: Laia Serra }
+  - await: { visible: { text: Ara mateix }, timeout: 15000 }
   - await: { idle: true, stableFor: 400, timeout: 9000 }
-  - wait: 2000
+  - wait: 1000

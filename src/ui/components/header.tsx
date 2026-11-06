@@ -42,9 +42,6 @@ export function AppHeader({ title }: { title?: string }) {
         style={styles.context}>
         {context}
       </Pressable>
-      <Pressable accessibilityRole="button" accessibilityLabel="Preferències" onPress={() => router.push('/settings')} style={styles.settings}>
-        <MinIcon name="settings" size={23} color={colors.text} />
-      </Pressable>
     </View>
   );
 }
@@ -58,5 +55,4 @@ const styles = StyleSheet.create({
   titleRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.x1 },
   title: { flexShrink: 1, fontWeight: '600' },
   draftDot: { width: 9, height: 9, borderRadius: 5 },
-  settings: { width: 48, height: 48, alignItems: 'center', justifyContent: 'center' },
 });

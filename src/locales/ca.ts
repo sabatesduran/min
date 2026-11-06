@@ -3,6 +3,7 @@ export const ca = {
     now: 'Ara',
     agenda: 'Agenda',
     people: 'Equip',
+    settings: 'Configuració',
     events: 'Esdeveniments',
   },
   common: {

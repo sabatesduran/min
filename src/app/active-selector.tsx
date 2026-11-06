@@ -8,6 +8,7 @@ import { useNow } from '@/features/time/use-now';
 import { Button } from '@/ui/components/button';
 import { PressableCard } from '@/ui/components/card';
 import { EmptyState } from '@/ui/components/empty-state';
+import { FormField } from '@/ui/components/form-field';
 import { MinIcon } from '@/ui/components/icon';
 import { MinText } from '@/ui/components/min-text';
 import { NavigationHeader } from '@/ui/components/navigation-header';
@@ -35,12 +36,21 @@ export default function ActiveSelectorScreen() {
     return new Set([...counts.entries()].filter(([, count]) => count > 1).map(([name]) => name));
   }, [selected]);
   const [candidateId, setCandidateId] = useState(() => suggested ?? selectedDocumentId ?? ordered[0]?.document.documentId ?? null);
+  const [personQuery, setPersonQuery] = useState('');
+  const visiblePeople = useMemo(() => {
+    const normalized = personQuery.trim().toLocaleLowerCase('ca').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (!normalized) return selected?.document.people ?? [];
+    return selected?.document.people.filter((person) => {
+      const searchable = `${person.name} ${person.disambiguation ?? ''}`.toLocaleLowerCase('ca').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      return searchable.includes(normalized);
+    }) ?? [];
+  }, [personQuery, selected]);
 
   const savePerson = async (mePersonId: string | null) => {
     try {
       await updateDocumentPreferences({
         mePersonId,
-        filter: mePersonId ? 'mine' : 'all',
+        filter: mePersonId ? (enable === 'personal' ? 'mine' : documentPreferences?.filter ?? 'all') : 'all',
         ...(mePersonId && enable === 'reminders'
           ? { reminderMode: 'mine' as const, reminderMinutes: documentPreferences?.reminderMinutes ?? 10 }
           : {}),
@@ -59,8 +69,26 @@ export default function ActiveSelectorScreen() {
       <Screen>
         <NavigationHeader title="Qui ets?" mode="close" />
         <MinText style={[styles.lead, { color: colors.secondary }]}>Tria el teu nom. No cal indicar cap càrrec. La selecció només es desa en aquest dispositiu.</MinText>
+        <View style={styles.search}>
+          <FormField
+            label="Cerca el teu nom"
+            value={personQuery}
+            onChangeText={setPersonQuery}
+            placeholder="Nom o cognoms"
+            returnKeyType="search"
+            autoCorrect={false}
+            clearButtonMode="while-editing"
+            reserveErrorSpace={false}
+          />
+        </View>
+        {!visiblePeople.length ? (
+          <EmptyState
+            title="Cap coincidència"
+            body={personQuery.trim() ? 'Prova amb una altra part del nom.' : 'Aquest esdeveniment no té cap persona.'}
+          />
+        ) : null}
         <View style={styles.list} accessibilityRole="radiogroup" accessibilityLabel="Tria qui ets">
-          {selected.document.people.map((person) => {
+          {visiblePeople.map((person) => {
             const isMe = person.id === documentPreferences.mePersonId;
             const showDisambiguation = repeatedPersonNames.has(person.name.trim().toLocaleLowerCase('ca')) && person.disambiguation;
             return (
@@ -139,6 +167,7 @@ export default function ActiveSelectorScreen() {
 
 const styles = StyleSheet.create({
   lead: { marginTop: spacing.x2, marginBottom: spacing.x5 },
+  search: { marginBottom: spacing.x4 },
   list: { gap: spacing.x3 },
   row: { flexDirection: 'row', alignItems: 'center', gap: spacing.x4 },
   text: { flex: 1, minWidth: 0, gap: spacing.x1 },

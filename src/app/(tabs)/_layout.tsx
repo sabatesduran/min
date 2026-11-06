@@ -6,8 +6,8 @@ import { useMinTheme } from '@/ui/use-min-theme';
 
 const icons: Record<string, MinIconName> = {
   index: 'now',
-  agenda: 'agenda',
   people: 'people',
+  settings: 'settings',
 };
 
 export default function TabsLayout() {
@@ -26,8 +26,9 @@ export default function TabsLayout() {
         },
       })}>
       <Tabs.Screen name="index" options={{ title: ca.tabs.now }} />
-      <Tabs.Screen name="agenda" options={{ title: ca.tabs.agenda }} />
+      <Tabs.Screen name="agenda" options={{ href: null }} />
       <Tabs.Screen name="people" options={{ title: 'Equip' }} />
+      <Tabs.Screen name="settings" options={{ title: 'Configuració' }} />
     </Tabs>
   );
 }

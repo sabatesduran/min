@@ -14,9 +14,10 @@ import {
 import { nativeWidgetsAvailable } from '@/features/widgets/native-widgets';
 import { Button } from '@/ui/components/button';
 import { Card, PressableCard } from '@/ui/components/card';
+import { FreshnessBar } from '@/ui/components/freshness-bar';
+import { AppHeader } from '@/ui/components/header';
 import { MinIcon } from '@/ui/components/icon';
 import { MinText } from '@/ui/components/min-text';
-import { NavigationHeader } from '@/ui/components/navigation-header';
 import { Screen } from '@/ui/components/screen';
 import { SegmentedControl } from '@/ui/components/segmented-control';
 import { radius, spacing } from '@/ui/tokens';
@@ -133,16 +134,11 @@ export default function SettingsScreen() {
 
   return (
     <Screen>
-      <NavigationHeader title="Configuració" />
-      <View style={styles.section}>
-        <MinText variant="label">Aparença</MinText>
-        <SegmentedControl
-          label="Aparença"
-          value={appPreferences.theme}
-          options={[{ value: 'system', label: 'Sistema' }, { value: 'light', label: 'Clar' }, { value: 'dark', label: 'Fosc' }]}
-          onChange={(theme) => void updateAppPreferences({ theme })}
-        />
-      </View>
+      <AppHeader title="Configuració" />
+      <SettingsGroupHeader
+        title="Esdeveniment"
+        description={document ? `Preferències pròpies de ${document.event.title}. No afecten la resta de documents.` : 'Preferències del document que tinguis obert.'}
+      />
 
       {document && documentPreferences ? (
         <>
@@ -152,6 +148,7 @@ export default function SettingsScreen() {
               <MinText style={styles.strong}>{document.event.title}</MinText>
               <MinText variant="metadata" style={{ color: colors.secondary }}>{document.event.organization} · revisió {document.revision}</MinText>
             </Card>
+            <FreshnessBar stored={selected} compact />
           </View>
 
           <View style={styles.section}>
@@ -250,7 +247,25 @@ export default function SettingsScreen() {
             </View>
           ) : null}
         </>
-      ) : null}
+      ) : (
+        <Card style={styles.emptyGroup}>
+          <MinText style={styles.strong}>Cap esdeveniment obert</MinText>
+          <MinText variant="metadata" style={{ color: colors.secondary }}>Obre un esdeveniment per configurar la identitat, els avisos i l’activitat en directe.</MinText>
+        </Card>
+      )}
+
+      <View style={[styles.groupDivider, { backgroundColor: colors.line }]} />
+      <SettingsGroupHeader title="App" description="Ajustos generals de min, independents de l’esdeveniment obert." />
+
+      <View style={styles.section}>
+        <MinText variant="label">Aparença</MinText>
+        <SegmentedControl
+          label="Aparença"
+          value={appPreferences.theme}
+          options={[{ value: 'system', label: 'Sistema' }, { value: 'light', label: 'Clar' }, { value: 'dark', label: 'Fosc' }]}
+          onChange={(theme) => void updateAppPreferences({ theme })}
+        />
+      </View>
 
       <View style={styles.section}>
         <MinText variant="label">Dades locals</MinText>
@@ -280,6 +295,16 @@ export default function SettingsScreen() {
         </PressableCard>
       </View>
     </Screen>
+  );
+}
+
+function SettingsGroupHeader({ title, description }: { title: string; description: string }) {
+  const { colors } = useMinTheme();
+  return (
+    <View style={styles.groupHeader}>
+      <MinText variant="hero">{title}</MinText>
+      <MinText variant="metadata" style={{ color: colors.secondary }}>{description}</MinText>
+    </View>
   );
 }
 
@@ -316,6 +341,9 @@ function SettingsSwitch({
 }
 
 const styles = StyleSheet.create({
+  groupHeader: { gap: spacing.x1, marginBottom: spacing.x5 },
+  groupDivider: { height: 1, marginTop: spacing.x2, marginBottom: spacing.x8 },
+  emptyGroup: { gap: spacing.x2, marginBottom: spacing.x8 },
   section: { gap: spacing.x3, marginBottom: spacing.x8 },
   sectionHeading: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: spacing.x3 },
   sectionHeadingText: { flex: 1, gap: spacing.x1 },

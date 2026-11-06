@@ -32,7 +32,7 @@ export default function WelcomeScreen() {
   };
   return (
     <Screen scroll={fontScale > 1.3} contentContainerStyle={styles.content}>
-      <View style={styles.toolbar}><IconButton icon="settings" label="Configuració" onPress={() => router.push('/settings')} /></View>
+      <View style={styles.toolbar}><IconButton icon="settings" label="Configuració" onPress={() => router.push('/(tabs)/settings')} /></View>
       <View style={styles.brandBlock}>
         <Image source={require('../../assets/images/logo-transparent.png')} resizeMode="contain" style={styles.logo} accessibilityLabel="min" />
         <MinText variant="display">El minut a minut de la colla, sempre a mà.</MinText>

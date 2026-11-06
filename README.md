@@ -19,7 +19,7 @@
 
 <p align="center">
   <img src="web/public/images/product/now.png" alt="Vista Ara de min" width="245" />
-  <img src="web/public/images/product/agenda.png" alt="Agenda de min" width="245" />
+  <img src="web/public/images/product/agenda.png" alt="Línia temporal personal de min" width="245" />
   <img src="web/public/images/product/detail.png" alt="Detall d’una tasca a min" width="245" />
 </p>
 
@@ -37,9 +37,9 @@
 
 ### Per a qui segueix l’esdeveniment
 
-- Veure què passa ara i què ve després.
-- Consultar l’agenda sencera i les tasques simultànies.
-- Filtrar per persona o equip.
+- Entrar directament al moment actual dins la línia temporal del dia.
+- Consultar tota la jornada i les tasques simultànies des d’Ara.
+- Filtrar entre totes les tasques i només les personals.
 - Obrir llocs, responsables, instruccions i checklists.
 - Rebre avisos locals i consultar el widget o la Live Activity.
 

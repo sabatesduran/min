@@ -59,7 +59,7 @@ export default function EventsScreen() {
         <Image source={require('../../assets/images/logo-transparent.png')} resizeMode="contain" style={styles.logo} accessibilityLabel="min" />
         <View style={styles.topActions}>
           {selectedDocumentId ? <Button label={largeText ? 'Torna' : 'Torna a l’esdeveniment'} accessibilityLabel="Torna a l’esdeveniment" icon="back" variant="quiet" onPress={() => router.replace('/(tabs)')} style={styles.returnButton} /> : null}
-          <IconButton icon="settings" label="Preferències" onPress={() => router.push('/settings')} />
+          {!selectedDocumentId ? <IconButton icon="settings" label="Preferències" onPress={() => router.push('/(tabs)/settings')} /> : null}
         </View>
       </View>
       <MinText variant="hero">Esdeveniments</MinText>

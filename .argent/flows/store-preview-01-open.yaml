@@ -1,10 +1,5 @@
 executionPrerequisite: L’app acaba d’arrencar amb les dades netes a la pantalla de benvinguda.
 steps:
-  - tool: launch-app
-    args: { bundleId: com.dsd.min }
-  - await: { visible: { text: Prova la demo }, timeout: 15000 }
-  - wait: 1200
-  - tap: { text: Prova la demo }
-  - await: { visible: { text: Què toca ara }, timeout: 15000 }
-  - await: { idle: true, stableFor: 400, timeout: 9000 }
+  - wait: 600
+  - tap: { x: 0.5, y: 0.742 }
   - wait: 1800

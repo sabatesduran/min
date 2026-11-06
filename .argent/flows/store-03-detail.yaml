@@ -2,9 +2,15 @@ steps:
   - launch: { native: com.dsd.min }
   - await: { visible: { text: Prova la demo }, timeout: 15000 }
   - tap: { text: Prova la demo }
-  - await: { visible: { text: Què toca ara }, timeout: 15000 }
-  - tap: { text: Agenda }
-  - await: { visible: { text: 'Tot el dia, en ordre' }, timeout: 15000 }
-  - tap: { text: Obre el local i repassa el pla del dia }
+  - await: { visible: { text: Ara mateix }, timeout: 15000 }
+  - when: { visible: { text: Munta l’escenari i prova el so } }
+    steps:
+      - tap: { text: Munta l’escenari i prova el so }
+  - when: { hidden: { text: Munta l’escenari i prova el so } }
+    steps:
+      - scroll-to:
+          target: { text: Coordina l’activitat principal }
+          direction: down
+      - tap: { text: Coordina l’activitat principal }
   - await: { visible: { text: Responsables }, timeout: 15000 }
   - await: { idle: true, stableFor: 400, timeout: 9000 }

@@ -30,7 +30,7 @@ export default function TaskDetailScreen() {
   }, [db, document, task]);
 
   if (!selected || !document || !task) {
-    return <Screen><EmptyState title="La tasca ja no hi és" body="Pot haver desaparegut en una revisió nova." action="Torna a l’agenda" onAction={() => router.replace('/(tabs)/agenda')} /></Screen>;
+    return <Screen><EmptyState title="La tasca ja no hi és" body="Pot haver desaparegut en una revisió nova." action="Torna a Ara" onAction={() => router.replace('/(tabs)')} /></Screen>;
   }
 
   const editable = canEditDocument(selected);

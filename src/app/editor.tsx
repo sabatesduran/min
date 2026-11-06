@@ -73,7 +73,7 @@ export default function DocumentEditorScreen() {
 
   return (
     <Screen>
-      <NavigationHeader title="Prepara l’esdeveniment" {...(exit === 'agenda' ? { onBack: () => router.replace('/(tabs)/agenda') } : {})} />
+      <NavigationHeader title="Prepara l’esdeveniment" {...(exit === 'agenda' ? { onBack: () => router.replace('/(tabs)') } : {})} />
       <View style={styles.titleBlock}>
         <View style={[styles.status, { backgroundColor: dirty ? colors.peach : colors.surface }]}>
           <MinText variant="caption" style={{ color: dirty ? colors.text : colors.secondary }}>{dirty ? 'Canvis desats en esborrany' : `Revisió actual · V${base.revision}`}</MinText>

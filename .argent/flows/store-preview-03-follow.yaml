@@ -1,16 +1,25 @@
-executionPrerequisite: La demo és oberta a la vista Agenda al principi del dia.
+executionPrerequisite: La demo és oberta a Ara amb el filtre Les meves.
 steps:
   - tool: launch-app
     args: { bundleId: com.dsd.min }
-  - wait: 800
-  - tap: { text: Obre el local i repassa el pla del dia }
+  - wait: 500
+  - when: { visible: { text: Munta l’escenari i prova el so } }
+    steps:
+      - tap: { text: Munta l’escenari i prova el so }
+  - when: { hidden: { text: Munta l’escenari i prova el so } }
+    steps:
+      - scroll-to:
+          target: { text: Coordina l’activitat principal }
+          direction: down
+      - tap: { text: Coordina l’activitat principal }
   - await: { visible: { text: Responsables }, timeout: 15000 }
   - await: { idle: true, stableFor: 400, timeout: 9000 }
-  - wait: 1200
-  - scroll-to:
-      target: { text: Obre el local i el magatzem }
-      direction: down
-  - await: { visible: { text: Obre el local i el magatzem }, timeout: 15000 }
   - wait: 800
-  - tap: { text: Obre el local i el magatzem }
-  - wait: 1200
+  - wait: 500
+  - when: { visible: { text: Fes una prova de micròfon } }
+    steps:
+      - tap: { text: Fes una prova de micròfon }
+  - when: { visible: { text: Confirma l’inici amb so i acollida } }
+    steps:
+      - tap: { text: Confirma l’inici amb so i acollida }
+  - wait: 800

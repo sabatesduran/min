@@ -72,7 +72,7 @@ export function createDemoDocument(
       startsAt: instant(eventStartsAt),
       endsAt: instant(eventEndsAt),
       timeZone,
-      notes: 'Una jornada completa de dotze hores per provar Ara, Agenda, Equip, responsables, funcions i checklists.',
+      notes: 'Una jornada completa de dotze hores per provar Ara, Equip, responsables, funcions i checklists.',
       accent: 'lime',
     },
     people: [

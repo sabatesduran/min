@@ -28,7 +28,7 @@ function Navigator() {
         <Stack.Screen name="create-event" options={{ presentation: 'modal' }} />
         <Stack.Screen name="ai-assistant" options={{ presentation: 'modal' }} />
         <Stack.Screen name="active-selector" options={{ presentation: 'formSheet', sheetGrabberVisible: true }} />
-        <Stack.Screen name="settings" />
+        <Stack.Screen name="now-preferences" options={{ presentation: 'formSheet', sheetGrabberVisible: true }} />
         <Stack.Screen name="data-management" />
         <Stack.Screen name="revisions/index" />
         <Stack.Screen name="revisions/[hash]" />
