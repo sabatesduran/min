@@ -19,7 +19,7 @@
 
 <p align="center">
   <img src="web/public/images/product/now.png" alt="Vista Ara de min" width="245" />
-  <img src="web/public/images/product/agenda.png" alt="Línia temporal personal de min" width="245" />
+  <img src="web/public/images/product/team.png" alt="Equip de min" width="245" />
   <img src="web/public/images/product/detail.png" alt="Detall d’una tasca a min" width="245" />
 </p>
 

@@ -22,7 +22,7 @@ const screenMask = Buffer.from(`
   </svg>
 `);
 
-for (const name of ['now', 'agenda', 'detail']) {
+for (const name of ['now', 'agenda', 'detail', 'team']) {
   const screen = await sharp(path.join(sourceDirectory, `${name}.png`))
     .resize(screenWidth, screenHeight, { fit: 'fill' })
     .ensureAlpha()
