@@ -219,6 +219,8 @@ export default function MinBuilder() {
     anchor.download = documentFileName(document.event.title);
     anchor.click();
     URL.revokeObjectURL(url);
+    // The next download must be a newer revision than the one just handed out.
+    setDraft((current) => ({ ...current, baseRevision: document.revision }));
     setStatus('El fitxer s’ha descarregat al dispositiu.');
   };
 
