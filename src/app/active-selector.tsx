@@ -15,6 +15,7 @@ import { NavigationHeader } from '@/ui/components/navigation-header';
 import { Screen } from '@/ui/components/screen';
 import { radius, spacing } from '@/ui/tokens';
 import { useMinTheme } from '@/ui/use-min-theme';
+import { goBack } from '@/ui/go-back';
 
 export default function ActiveSelectorScreen() {
   const { mode, required, suggested, after, enable } = useLocalSearchParams<{ mode?: string; required?: string; suggested?: string; after?: string; enable?: string }>();
@@ -57,7 +58,7 @@ export default function ActiveSelectorScreen() {
         ...(mePersonId && enable === 'live' ? { liveMode: 'mine' as const } : {}),
       });
       if (after === 'now') router.replace('/(tabs)');
-      else router.back();
+      else goBack();
     } catch (error) {
       Alert.alert('No s’ha pogut canviar la identitat', error instanceof Error ? error.message : 'Revisa la configuració dels avisos i torna-ho a provar.');
     }
@@ -124,7 +125,7 @@ export default function ActiveSelectorScreen() {
     if (!candidateId) return;
     await selectDocument(candidateId);
     if (required === '1') router.replace('/(tabs)');
-    else router.back();
+    else goBack();
   };
   return (
     <Screen>

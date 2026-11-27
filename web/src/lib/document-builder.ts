@@ -1,12 +1,14 @@
 import { Temporal } from '@js-temporal/polyfill';
 
-import type { Accent, SharedDocument, Task } from '@/domain/models';
+import type { Accent, ChecklistItem, RoleAssignment, SharedDocument, Task } from '@/domain/models';
 import { parseSharedDocument } from '@/domain/schema';
+import { orderedTasks } from '@/domain/time';
 import { buildDocumentFileName } from '@/features/sharing/document-file-name';
 
 export type BuilderPerson = {
   id: string;
   name: string;
+  disambiguation?: string;
 };
 
 export type BuilderTeam = {
@@ -27,6 +29,10 @@ export type BuilderTask = {
   personIds: string[];
   teamIds: string[];
   common: boolean;
+  // Kept from an imported file; the generator has no fields for them.
+  category?: string;
+  roles?: RoleAssignment[];
+  checklist?: ChecklistItem[];
 };
 
 export type BuilderDraft = {
@@ -42,6 +48,8 @@ export type BuilderDraft = {
   people: BuilderPerson[];
   teams: BuilderTeam[];
   tasks: BuilderTask[];
+  /** Revision of the imported file, so the download is published as the next one. */
+  baseRevision?: number;
 };
 
 const id = () => crypto.randomUUID();
@@ -112,18 +120,25 @@ export function addBuilderTask(draft: BuilderDraft): BuilderTask {
 }
 
 export function draftToDocument(draft: BuilderDraft): SharedDocument {
+  const personIds = new Set(draft.people.map((person) => person.id));
+  const teamIds = new Set(draft.teams.map((team) => team.id));
   const tasks = draft.tasks.map((task, sortOrder): Task => {
     const base = {
       id: task.id,
       title: task.title.trim(),
+      ...(task.category?.trim() ? { category: task.category.trim() } : {}),
       sortOrder,
       ...(task.place.trim() ? { place: task.place.trim() } : {}),
       ...(task.notes.trim() ? { notes: task.notes.trim() } : {}),
       personIds: task.personIds,
       teamIds: task.teamIds,
-      roles: [],
+      roles: (task.roles ?? []).map((role) => ({
+        ...role,
+        personIds: role.personIds.filter((personId) => personIds.has(personId)),
+        teamIds: role.teamIds.filter((teamId) => teamIds.has(teamId)),
+      })),
       common: task.common,
-      checklist: [],
+      checklist: task.checklist ?? [],
     };
 
     if (task.kind === 'after') {
@@ -144,7 +159,7 @@ export function draftToDocument(draft: BuilderDraft): SharedDocument {
     schemaVersion: 1,
     documentId: draft.documentId,
     organizationId: draft.organizationId,
-    revision: 1,
+    revision: (draft.baseRevision ?? 0) + 1,
     publishedAt: new Date().toISOString(),
     event: {
       title: draft.title.trim(),
@@ -155,7 +170,11 @@ export function draftToDocument(draft: BuilderDraft): SharedDocument {
       ...(draft.notes.trim() ? { notes: draft.notes.trim() } : {}),
       accent: draft.accent,
     },
-    people: draft.people.map((person) => ({ id: person.id, name: person.name.trim() })),
+    people: draft.people.map((person) => ({
+      id: person.id,
+      name: person.name.trim(),
+      ...(person.disambiguation?.trim() ? { disambiguation: person.disambiguation.trim() } : {}),
+    })),
     teams: draft.teams.map((team) => ({ id: team.id, name: team.name.trim(), personIds: team.personIds })),
     tasks,
   });
@@ -173,9 +192,15 @@ export function documentToDraft(document: SharedDocument): BuilderDraft {
     timeZone,
     notes: document.event.notes ?? '',
     accent: document.event.accent,
-    people: document.people.map((person) => ({ id: person.id, name: person.name })),
+    baseRevision: document.revision,
+    people: document.people.map((person) => ({
+      id: person.id,
+      name: person.name,
+      ...(person.disambiguation ? { disambiguation: person.disambiguation } : {}),
+    })),
     teams: document.teams.map((team) => ({ id: team.id, name: team.name, personIds: [...team.personIds] })),
-    tasks: document.tasks.map((task) => ({
+    // The download numbers tasks by position, so start from the order the app shows.
+    tasks: orderedTasks(document.tasks).map((task) => ({
       id: task.id,
       kind: task.kind,
       title: task.title,
@@ -187,6 +212,9 @@ export function documentToDraft(document: SharedDocument): BuilderDraft {
       personIds: [...task.personIds],
       teamIds: [...task.teamIds],
       common: task.common,
+      ...(task.category ? { category: task.category } : {}),
+      roles: task.roles.map((role) => ({ ...role, personIds: [...role.personIds], teamIds: [...role.teamIds] })),
+      checklist: task.checklist.map((item) => ({ ...item })),
     })),
   };
 }

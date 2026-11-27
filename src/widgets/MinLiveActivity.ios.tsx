@@ -10,16 +10,39 @@ import {
 } from '@expo/ui/swift-ui/modifiers';
 import { createLiveActivity, type LiveActivityEnvironment } from 'expo-widgets';
 
-import type { GlanceProps } from '@/features/widgets/glance-data';
+import type { LiveGlanceProps } from '@/features/widgets/glance-data';
 
-const MinLiveActivity = (props: GlanceProps, environment: LiveActivityEnvironment) => {
+const MinLiveActivity = (input: LiveGlanceProps, environment: LiveActivityEnvironment) => {
   'widget';
+  // iOS re-renders the activity at its stale date; pick whatever step is due by then.
+  const now = Date.now();
+  const steps = input.steps || [];
+  let step = null;
+  let due = -1;
+  for (let index = 0; index < steps.length; index += 1) {
+    const candidate = steps[index];
+    if (candidate && candidate.at <= now) {
+      step = candidate;
+      due = index;
+    }
+  }
+  // No object spread here: the layout runs standalone inside the widget extension.
+  const source = step || input;
+  const props = {
+    eventTitle: input.eventTitle,
+    state: source.state,
+    eyebrow: source.eyebrow,
+    title: source.title,
+    timeLabel: source.timeLabel,
+    secondary: source.secondary,
+  };
+  const outdated = environment.isStale && (due < 0 || (due === steps.length - 1 && input.hasMore));
   const dark = environment.colorScheme === 'dark';
   const canvas = dark ? '#252A26' : '#F6F4EC';
   const ink = dark ? '#F5F3EB' : '#20221F';
   const secondary = dark ? '#ADB3AA' : '#646862';
   const accent = props.state === 'active' ? '#B5D83D' : '#7882FF';
-  const staleLabel = environment.isStale ? 'Obre min per actualitzar' : props.secondary;
+  const staleLabel = outdated ? 'Obre min per actualitzar' : props.secondary;
 
   return {
     banner: (
@@ -69,4 +92,4 @@ const MinLiveActivity = (props: GlanceProps, environment: LiveActivityEnvironmen
   };
 };
 
-export default createLiveActivity<GlanceProps>('MinLiveActivity', MinLiveActivity);
+export default createLiveActivity<LiveGlanceProps>('MinLiveActivity', MinLiveActivity);

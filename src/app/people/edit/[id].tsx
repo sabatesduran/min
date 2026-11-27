@@ -15,6 +15,7 @@ import { NavigationHeader } from '@/ui/components/navigation-header';
 import { Screen } from '@/ui/components/screen';
 import { spacing } from '@/ui/tokens';
 import { useMinTheme } from '@/ui/use-min-theme';
+import { goBack } from '@/ui/go-back';
 
 export default function EditPersonScreen() {
   const { id, returnTo } = useLocalSearchParams<{ id: string; returnTo?: string }>();
@@ -35,7 +36,7 @@ export default function EditPersonScreen() {
       const people = existing ? base.people.map((candidate) => candidate.id === existing.id ? person : candidate) : [...base.people, person];
       await saveDraft(parseSharedDocument({ ...base, people }));
       if (returnTo === 'editor') router.replace('/editor');
-      else router.back();
+      else goBack();
     } catch (error) { Alert.alert('No s’ha pogut desar', error instanceof Error ? error.message : 'Torna-ho a provar.'); }
     finally { setSaving(false); }
   };

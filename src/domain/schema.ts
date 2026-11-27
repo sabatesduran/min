@@ -177,7 +177,10 @@ export const sharedDocumentSchema = z
 export type ParsedSharedDocument = z.infer<typeof sharedDocumentSchema>;
 
 export function parseSharedDocument(input: unknown): ParsedSharedDocument {
-  return sharedDocumentSchema.parse(input);
+  const result = sharedDocumentSchema.safeParse(input);
+  if (result.success) return result.data;
+  const messages = [...new Set(result.error.issues.map((issue) => issue.message))];
+  throw new Error(messages.slice(0, 3).join('\n') || 'El document no és vàlid.', { cause: result.error });
 }
 
 export function safeParseSharedDocument(input: unknown) {

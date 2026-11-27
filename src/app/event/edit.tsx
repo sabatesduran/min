@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Alert, Pressable, StyleSheet, View } from 'react-native';
-import { router } from 'expo-router';
 import { getCalendars } from 'expo-localization';
 
 import type { Accent } from '@/domain/models';
@@ -19,6 +18,7 @@ import { Screen } from '@/ui/components/screen';
 import { accentLabels, accents, colorForAccent, inkForAccent } from '@/ui/accent';
 import { radius, spacing } from '@/ui/tokens';
 import { useMinTheme } from '@/ui/use-min-theme';
+import { goBack } from '@/ui/go-back';
 
 export default function EditEventScreen() {
   const { selected, saveDraft } = useAppData();
@@ -41,7 +41,7 @@ export default function EditEventScreen() {
     try {
       const event = { title: title.trim(), organization: organization.trim(), startsAt: startsAt.toISOString(), endsAt: endsAt.toISOString(), timeZone, accent, ...(notes.trim() ? { notes: notes.trim() } : {}) };
       await saveDraft(parseSharedDocument({ ...base, event }));
-      router.back();
+      goBack();
     } catch (error) {
       Alert.alert('No s’ha pogut desar', error instanceof Error ? error.message : 'Comprova que totes les tasques quedin dins de la nova finestra.');
     } finally { setSaving(false); }

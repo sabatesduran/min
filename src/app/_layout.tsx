@@ -1,24 +1,67 @@
 import '@/global.css';
 
-import { Stack } from 'expo-router';
+import * as Notifications from 'expo-notifications';
+import { router, Stack, useGlobalSearchParams, useSegments } from 'expo-router';
 import { SQLiteProvider } from 'expo-sqlite';
 import { StatusBar } from 'expo-status-bar';
-import { Suspense } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { Suspense, useEffect } from 'react';
+import { ActivityIndicator, Appearance, Platform, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { migrateDatabase } from '@/db/migrations';
-import { AppDataProvider } from '@/features/app-data/app-data-provider';
+import { AppDataProvider, useAppData } from '@/features/app-data/app-data-provider';
 import { useMinTheme } from '@/ui/use-min-theme';
+import { installWebAlert } from '@/ui/web-alert';
+
+installWebAlert();
+
+/** Opens the event a reminder belongs to when the user taps the notification. */
+function NotificationLinks() {
+  const response = Notifications.useLastNotificationResponse();
+  useEffect(() => {
+    if (!response || response.actionIdentifier !== Notifications.DEFAULT_ACTION_IDENTIFIER) return;
+    const documentId = response.notification.request.content.data?.documentId;
+    Notifications.clearLastNotificationResponse();
+    if (typeof documentId === 'string') router.navigate({ pathname: '/', params: { documentId } });
+  }, [response]);
+  return null;
+}
+
+/**
+ * With the app already open, `/?documentId=` resolves to the tabs instead of the entry screen,
+ * so the requested event is selected here.
+ */
+function EventLinks() {
+  const params = useGlobalSearchParams<{ documentId?: string | string[] }>();
+  const requestedId = Array.isArray(params.documentId) ? params.documentId[0] : params.documentId;
+  const inTabs = useSegments()[0] === '(tabs)';
+  const { loading, documents, selectedDocumentId, selectDocument } = useAppData();
+  useEffect(() => {
+    if (!inTabs || !requestedId || loading) return;
+    router.setParams({ documentId: undefined });
+    if (requestedId !== selectedDocumentId && documents.some((item) => item.document.documentId === requestedId)) {
+      void selectDocument(requestedId);
+    }
+  }, [documents, inTabs, loading, requestedId, selectDocument, selectedDocumentId]);
+  return null;
+}
 
 function Navigator() {
   const { scheme, colors } = useMinTheme();
+  const { appPreferences } = useAppData();
+  useEffect(() => {
+    // Keeps the status bar, alerts and pickers in step with the theme chosen in min.
+    if (Platform.OS !== 'web') Appearance.setColorScheme(appPreferences.theme === 'system' ? 'unspecified' : appPreferences.theme);
+  }, [appPreferences.theme]);
   return (
     <>
+      {Platform.OS === 'web' ? null : <NotificationLinks />}
+      <EventLinks />
       <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
       <Stack
         screenOptions={{
           headerShown: false,
+          statusBarStyle: scheme === 'dark' ? 'light' : 'dark',
           contentStyle: { backgroundColor: colors.canvas },
           animation: 'slide_from_right',
         }}>

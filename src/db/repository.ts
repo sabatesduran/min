@@ -229,6 +229,9 @@ export async function applyImport(db: SQLiteDatabase, assessment: ImportAssessme
     );
     return;
   }
+  // A draft without unpublished changes follows the imported revision; real edits are kept.
+  const stored = await getStoredDocument(db, assessment.incoming.documentId);
+  const draftIsClean = !stored?.draft || JSON.stringify(stored.draft) === JSON.stringify(stored.document);
   await db.withTransactionAsync(async () => {
     await db.runAsync(
       `INSERT OR IGNORE INTO revisions (document_id, revision, content_hash, json, published_at, received_at)
@@ -243,10 +246,16 @@ export async function applyImport(db: SQLiteDatabase, assessment: ImportAssessme
     await db.runAsync(
       `UPDATE documents
        SET current_revision = ?, current_json = ?,
-           draft_json = CASE WHEN origin = 'received' THEN NULL ELSE draft_json END,
+           draft_json = CASE
+             WHEN origin = 'received' THEN NULL
+             WHEN ? = 1 THEN ?
+             ELSE draft_json
+           END,
            imported_at = ?, updated_at = ?
        WHERE id = ?`,
       assessment.incoming.revision,
+      JSON.stringify(assessment.incoming),
+      draftIsClean ? 1 : 0,
       JSON.stringify(assessment.incoming),
       now,
       now,

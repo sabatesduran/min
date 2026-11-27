@@ -6,6 +6,8 @@ export type DocumentDiff = {
   tasksChanged: string[];
   peopleAdded: string[];
   peopleRemoved: string[];
+  peopleChanged: string[];
+  teamsChanged: boolean;
   eventChanged: boolean;
 };
 
@@ -22,6 +24,10 @@ export function diffDocuments(previous: SharedDocument, next: SharedDocument): D
       .map((task) => task.title),
     peopleAdded: next.people.filter((person) => !previousPeople.has(person.id)).map((person) => person.name),
     peopleRemoved: previous.people.filter((person) => !nextPeople.has(person.id)).map((person) => person.name),
+    peopleChanged: next.people
+      .filter((person) => previousPeople.has(person.id) && JSON.stringify(previousPeople.get(person.id)) !== JSON.stringify(person))
+      .map((person) => person.name),
+    teamsChanged: JSON.stringify(previous.teams) !== JSON.stringify(next.teams),
     eventChanged: JSON.stringify(previous.event) !== JSON.stringify(next.event),
   };
 }

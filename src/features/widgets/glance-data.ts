@@ -115,3 +115,53 @@ export function buildGlanceTimeline(
   }
   return entries.filter((entry, index) => index === 0 || JSON.stringify(entry.props) !== JSON.stringify(entries[index - 1]?.props));
 }
+
+export type LiveStep = Pick<GlanceProps, 'state' | 'eyebrow' | 'title' | 'timeLabel' | 'secondary'> & { at: number };
+
+/**
+ * Live Activity payload. `steps` holds the upcoming changes so the activity can show the right
+ * task when iOS re-renders it without the app running (there is no server to push updates).
+ */
+export type LiveGlanceProps = GlanceProps & { steps: LiveStep[]; hasMore: boolean };
+
+const MAX_LIVE_STEPS = 6;
+// ActivityKit rejects content above 4 KB; leave room for its own envelope.
+const MAX_LIVE_BYTES = 3_000;
+const MAX_STEP_TEXT = 60;
+
+function utf8Bytes(value: string): number {
+  let bytes = 0;
+  for (const character of value) {
+    const code = character.codePointAt(0) ?? 0;
+    bytes += code < 0x80 ? 1 : code < 0x800 ? 2 : code < 0x10000 ? 3 : 4;
+  }
+  return bytes;
+}
+
+function clip(value: string): string {
+  const characters = [...value];
+  return characters.length > MAX_STEP_TEXT ? `${characters.slice(0, MAX_STEP_TEXT - 1).join('')}…` : value;
+}
+
+export function buildLiveGlanceProps(
+  document: SharedDocument,
+  preferences: DocumentPreferences,
+  nowMs: number,
+): LiveGlanceProps {
+  const timeline = buildGlanceTimeline(document, preferences, nowMs);
+  const [current, ...upcoming] = timeline;
+  const steps = upcoming.slice(0, MAX_LIVE_STEPS).map(({ date, props }) => ({
+    at: date.getTime(),
+    state: props.state,
+    eyebrow: props.eyebrow,
+    title: clip(props.title),
+    timeLabel: props.timeLabel,
+    secondary: clip(props.secondary),
+  }));
+  const live = { ...(current?.props ?? buildGlanceProps(document, preferences, nowMs)), steps, hasMore: upcoming.length > steps.length };
+  while (live.steps.length && utf8Bytes(JSON.stringify(live)) > MAX_LIVE_BYTES) {
+    live.steps.pop();
+    live.hasMore = true;
+  }
+  return live;
+}

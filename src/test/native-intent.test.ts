@@ -8,6 +8,10 @@ describe('enllaços interns', () => {
       .toBe('/?documentId=10000000-0000-4000-8000-000000000001');
   });
 
+  it('obre l’inici amb l’enllaç del widget buit', () => {
+    expect(redirectSystemPath({ path: 'min://app', initial: false })).toBe('/');
+  });
+
   it('envia els fitxers rebuts a la revisió d’importació', () => {
     expect(redirectSystemPath({ path: 'file:///Documents/prova.minut.json', initial: true }))
       .toBe('/import-review?uri=file%3A%2F%2F%2FDocuments%2Fprova.minut.json');

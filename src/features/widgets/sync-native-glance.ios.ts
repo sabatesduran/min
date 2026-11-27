@@ -4,8 +4,8 @@ import type { DocumentPreferences, SharedDocument } from '@/domain/models';
 import { eventStatus, nextBoundaryMs } from '@/domain/time';
 
 import {
-  buildGlanceProps,
   buildGlanceTimeline,
+  buildLiveGlanceProps,
   emptyGlanceProps,
   preferencesForGlance,
 } from './glance-data';
@@ -33,7 +33,23 @@ async function rememberLiveDocument(db: SQLiteDatabase, documentId: string | nul
   );
 }
 
-export async function syncNativeGlance(
+let queue: Promise<void> = Promise.resolve();
+let lastWidgetSignature: string | null = null;
+let lastLiveSignature: string | null = null;
+
+/** Runs one sync at a time so two overlapping runs cannot start duplicate activities. */
+export function syncNativeGlance(
+  db: SQLiteDatabase,
+  document: SharedDocument | null,
+  preferences: DocumentPreferences | null,
+  nowMs: number,
+): Promise<void> {
+  const run = queue.then(() => syncNow(db, document, preferences, nowMs));
+  queue = run.catch(() => {});
+  return run;
+}
+
+async function syncNow(
   db: SQLiteDatabase,
   document: SharedDocument | null,
   preferences: DocumentPreferences | null,
@@ -47,6 +63,8 @@ export async function syncNativeGlance(
   ]);
 
   if (!document || !preferences) {
+    lastWidgetSignature = null;
+    lastLiveSignature = null;
     MinNextTaskWidget.updateSnapshot(emptyGlanceProps);
     const instances = MinLiveActivity.getInstances();
     await Promise.all(instances.map((instance) => instance.end('immediate')));
@@ -54,7 +72,13 @@ export async function syncNativeGlance(
     return;
   }
 
-  MinNextTaskWidget.updateTimeline(buildGlanceTimeline(document, preferences, nowMs));
+  // Reloading the widget timeline is budgeted by iOS; only do it when its content changes.
+  const timeline = buildGlanceTimeline(document, preferences, nowMs);
+  const widgetSignature = JSON.stringify(timeline.map((entry, index) => [index === 0 ? 0 : entry.date.getTime(), entry.props]));
+  if (widgetSignature !== lastWidgetSignature) {
+    MinNextTaskWidget.updateTimeline(timeline);
+    lastWidgetSignature = widgetSignature;
+  }
 
   const canTrackMine = preferences.liveMode !== 'mine' || preferences.mePersonId !== null;
   if (
@@ -62,6 +86,7 @@ export async function syncNativeGlance(
     !canTrackMine ||
     eventStatus(document.event, nowMs) !== 'active'
   ) {
+    lastLiveSignature = null;
     const instances = MinLiveActivity.getInstances();
     await Promise.all(instances.map((instance) => instance.end('immediate')));
     await rememberLiveDocument(db, null);
@@ -73,9 +98,11 @@ export async function syncNativeGlance(
     preferences.liveMode,
     preferences.liveIncludeCommon,
   );
-  const props = buildGlanceProps(document, livePreferences, nowMs);
-  const nextBoundary = nextBoundaryMs(document, nowMs);
-  const staleDate = nextBoundary === null ? undefined : new Date(nextBoundary + 60_000);
+  const props = buildLiveGlanceProps(document, livePreferences, nowMs);
+  // Going stale at the next change makes iOS re-render the activity, which then shows the next step.
+  const nextChange = props.steps[0]?.at ?? nextBoundaryMs(document, nowMs);
+  const staleDate = nextChange == null ? undefined : new Date(nextChange);
+  const liveSignature = JSON.stringify([props, nextChange]);
   const rememberedDocumentId = await storedLiveDocumentId(db);
   let instances = MinLiveActivity.getInstances();
 
@@ -86,10 +113,16 @@ export async function syncNativeGlance(
 
   if (!instances.length) {
     MinLiveActivity.start(props, props.url, staleDate);
+    lastLiveSignature = liveSignature;
     await rememberLiveDocument(db, document.documentId);
     return;
   }
 
+  if (liveSignature === lastLiveSignature && instances.length === 1) return;
+  // Keep a single activity if an earlier version left duplicates behind.
+  await Promise.all(instances.slice(1).map((instance) => instance.end('immediate')));
+  instances = instances.slice(0, 1);
   await Promise.all(instances.map((instance) => instance.update(props, staleDate)));
+  lastLiveSignature = liveSignature;
   await rememberLiveDocument(db, document.documentId);
 }

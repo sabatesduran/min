@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Alert, Pressable, StyleSheet, View } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import * as Crypto from 'expo-crypto';
 
 import { canEditDocument } from '@/domain/permissions';
@@ -16,6 +16,7 @@ import { NavigationHeader } from '@/ui/components/navigation-header';
 import { Screen } from '@/ui/components/screen';
 import { spacing } from '@/ui/tokens';
 import { useMinTheme } from '@/ui/use-min-theme';
+import { goBack } from '@/ui/go-back';
 
 export default function EditTeamScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -38,7 +39,7 @@ export default function EditTeamScreen() {
       const team = { id: existing?.id ?? Crypto.randomUUID(), name: name.trim(), personIds };
       const teams = existing ? base.teams.map((candidate) => candidate.id === existing.id ? team : candidate) : [...base.teams, team];
       await saveDraft(parseSharedDocument({ ...base, teams }));
-      router.back();
+      goBack();
     } catch (error) {
       Alert.alert('No s’ha pogut desar', error instanceof Error ? error.message : 'Revisa les dades.');
     } finally { setSaving(false); }
@@ -54,7 +55,7 @@ export default function EditTeamScreen() {
           roles: task.roles.map((role) => ({ ...role, teamIds: role.teamIds.filter((teamId) => teamId !== existing.id) })),
         }));
         await saveDraft(parseSharedDocument({ ...base, teams: base.teams.filter((team) => team.id !== existing.id), tasks }));
-        router.back();
+        goBack();
       } },
     ]);
   };
