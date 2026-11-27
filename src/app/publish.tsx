@@ -73,7 +73,8 @@ export default function PublishScreen() {
           {diff.tasksAdded.length ? <MinText>{diff.tasksAdded.length} tasques afegides</MinText> : null}
           {diff.tasksChanged.length ? <MinText>{diff.tasksChanged.length} tasques modificades</MinText> : null}
           {diff.tasksRemoved.length ? <MinText>{diff.tasksRemoved.length} tasques eliminades</MinText> : null}
-          {diff.peopleAdded.length || diff.peopleRemoved.length ? <MinText>Directori de persones modificat</MinText> : null}
+          {diff.peopleAdded.length || diff.peopleRemoved.length || diff.peopleChanged.length ? <MinText>Directori de persones modificat</MinText> : null}
+          {diff.teamsChanged ? <MinText>Equips modificats</MinText> : null}
           <Button label={`Crea la revisió V${current.revision + 1}`} icon="upload" loading={working === 'publish'} onPress={publish} />
         </Card>
       ) : <Card><MinText variant="label">Revisió preparada</MinText><MinText style={{ color: colors.secondary }}>El fitxer compartit correspondrà a la revisió V{current.revision}.</MinText></Card>}

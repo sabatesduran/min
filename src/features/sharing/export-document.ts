@@ -3,7 +3,7 @@ import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 
 import type { SharedDocument, Task } from '@/domain/models';
-import { formatDateTime, formatTaskTime, personIdsForTask } from '@/domain/time';
+import { formatDateTime, formatTaskTime, orderedTasks, personIdsForTask } from '@/domain/time';
 import { buildDocumentFileName } from '@/features/sharing/document-file-name';
 import { MIN_DOCUMENT_MIME_TYPE, MIN_DOCUMENT_UTI } from '@/features/sharing/document-type';
 
@@ -34,24 +34,33 @@ function taskPeople(document: SharedDocument, task: Task): string {
 }
 
 export async function shareDocumentPdf(document: SharedDocument, personId?: string): Promise<string> {
+  const ordered = orderedTasks(document.tasks);
   const tasks = personId
-    ? document.tasks.filter((task) => personIdsForTask(document, task).has(personId) || task.common)
-    : document.tasks;
+    ? ordered.filter((task) => personIdsForTask(document, task).has(personId) || task.common)
+    : ordered;
   const person = personId ? document.people.find((candidate) => candidate.id === personId) : null;
-  const rows = tasks.map((task) => `
+  const dayFormat = new Intl.DateTimeFormat('ca-ES', { timeZone: document.event.timeZone, weekday: 'long', day: 'numeric', month: 'long' });
+  const multiDay = dayFormat.format(new Date(document.event.startsAt)) !== dayFormat.format(new Date(document.event.endsAt));
+  let lastDay = '';
+  const rows = tasks.map((task) => {
+    const day = multiDay && task.kind !== 'after' ? dayFormat.format(new Date(task.startsAt)) : lastDay;
+    const heading = day !== lastDay ? `<h3 class="day">${escapeHtml(day)}</h3>` : '';
+    lastDay = day;
+    return `${heading}
     <article class="task">
       <div class="time">${escapeHtml(formatTaskTime(task, document))}</div>
       <div><h2>${escapeHtml(task.title)}</h2>
       ${task.place ? `<p>${escapeHtml(task.place)}</p>` : ''}
       <p>${escapeHtml(taskPeople(document, task))}</p>
       ${task.notes ? `<p>${escapeHtml(task.notes).replace(/\n/g, '<br>')}</p>` : ''}</div>
-    </article>`).join('');
+    </article>`;
+  }).join('');
   const html = `<!doctype html><html lang="ca"><head><meta charset="utf-8"><style>
     @page { margin: 32px; } body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; color: #20221F; font-size: 12px; }
     header { border-bottom: 3px solid #3947F5; padding-bottom: 18px; margin-bottom: 24px; }
     h1 { font-size: 28px; margin: 0 0 8px; } h2 { font-size: 16px; margin: 0 0 5px; } p { margin: 3px 0; line-height: 1.45; }
     .meta { color: #646862; } .task { display: grid; grid-template-columns: 90px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid #D6D9CF; break-inside: avoid; }
-    .time { font-variant-numeric: tabular-nums; font-weight: 700; color: #3947F5; }
+    .day { font-size: 13px; text-transform: capitalize; margin: 22px 0 0; color: #646862; } .time { font-variant-numeric: tabular-nums; font-weight: 700; color: #3947F5; }
   </style></head><body><header><h1>${escapeHtml(document.event.title)}</h1><p>${escapeHtml(document.event.organization)}</p>
   <p class="meta">${escapeHtml(formatDateTime(document.event.startsAt, document.event.timeZone))} — ${escapeHtml(formatDateTime(document.event.endsAt, document.event.timeZone))}</p>
   <p class="meta">Revisió ${document.revision}${person ? ` · Full de ${escapeHtml(person.name)}` : ' · Full general'} · Aquesta és una còpia</p></header>${rows}</body></html>`;

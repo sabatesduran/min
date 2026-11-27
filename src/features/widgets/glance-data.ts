@@ -115,3 +115,31 @@ export function buildGlanceTimeline(
   }
   return entries.filter((entry, index) => index === 0 || JSON.stringify(entry.props) !== JSON.stringify(entries[index - 1]?.props));
 }
+
+export type LiveStep = Pick<GlanceProps, 'state' | 'eyebrow' | 'title' | 'timeLabel' | 'secondary'> & { at: number };
+
+/**
+ * Live Activity payload. `steps` holds the upcoming changes so the activity can show the right
+ * task when iOS re-renders it without the app running (there is no server to push updates).
+ */
+export type LiveGlanceProps = GlanceProps & { steps: LiveStep[]; hasMore: boolean };
+
+const MAX_LIVE_STEPS = 6;
+
+export function buildLiveGlanceProps(
+  document: SharedDocument,
+  preferences: DocumentPreferences,
+  nowMs: number,
+): LiveGlanceProps {
+  const timeline = buildGlanceTimeline(document, preferences, nowMs);
+  const [current, ...upcoming] = timeline;
+  const steps = upcoming.slice(0, MAX_LIVE_STEPS).map(({ date, props }) => ({
+    at: date.getTime(),
+    state: props.state,
+    eyebrow: props.eyebrow,
+    title: props.title,
+    timeLabel: props.timeLabel,
+    secondary: props.secondary,
+  }));
+  return { ...(current?.props ?? buildGlanceProps(document, preferences, nowMs)), steps, hasMore: upcoming.length > steps.length };
+}

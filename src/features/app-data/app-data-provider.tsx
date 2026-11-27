@@ -56,13 +56,14 @@ export function AppDataProvider({ children }: { children: React.ReactNode }) {
   const [documents, setDocuments] = useState<StoredDocument[]>([]);
   const [appPreferences, setAppPreferencesState] = useState<AppPreferences>(defaultAppPreferences);
   const [documentPreferences, setDocumentPreferencesState] = useState<DocumentPreferences | null>(null);
-  const now = useNow();
 
   const selectedDocumentId = appPreferences.selectedDocumentId;
   const selected = useMemo(
     () => documents.find((item) => item.document.documentId === selectedDocumentId) ?? null,
     [documents, selectedDocumentId],
   );
+  // Ticks at the selected event's task boundaries so widgets and the Live Activity change on time.
+  const now = useNow(selected?.document);
 
   const refresh = useCallback(async () => {
     const [nextDocuments, nextAppPreferences] = await Promise.all([listDocuments(db), getAppPreferences(db)]);

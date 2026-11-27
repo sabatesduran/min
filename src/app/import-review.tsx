@@ -126,7 +126,7 @@ export default function ImportReviewScreen() {
         </View>
       </Card>
       {assessment.kind === 'duplicate' ? <Card style={[styles.notice, { backgroundColor: colors.surface }]}><MinText variant="label">Aquest fitxer ja està desat</MinText><MinText style={{ color: colors.secondary }}>No es crearà cap còpia ni se substituirà cap revisió.</MinText></Card> : null}
-      {diff && assessment.kind !== 'duplicate' ? <View style={styles.changes}><MinText variant="label">Què canvia</MinText>{diff.eventChanged ? <MinText>Dades generals modificades</MinText> : null}{diff.tasksAdded.map((title) => <MinText key={`a-${title}`}>Afegida: {title}</MinText>)}{diff.tasksChanged.map((title) => <MinText key={`m-${title}`}>Modificada: {title}</MinText>)}{diff.tasksRemoved.map((title) => <MinText key={`r-${title}`}>Eliminada: {title}</MinText>)}</View> : null}
+      {diff && assessment.kind !== 'duplicate' ? <View style={styles.changes}><MinText variant="label">Què canvia</MinText>{diff.eventChanged ? <MinText>Dades generals modificades</MinText> : null}{diff.tasksAdded.map((title, index) => <MinText key={`a-${index}`}>Afegida: {title}</MinText>)}{diff.tasksChanged.map((title, index) => <MinText key={`m-${index}`}>Modificada: {title}</MinText>)}{diff.tasksRemoved.map((title, index) => <MinText key={`r-${index}`}>Eliminada: {title}</MinText>)}{diff.peopleAdded.length || diff.peopleRemoved.length || diff.peopleChanged.length ? <MinText>Directori de persones modificat</MinText> : null}{diff.teamsChanged ? <MinText>Equips modificats</MinText> : null}</View> : null}
     </Screen>
   );
 }

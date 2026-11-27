@@ -150,6 +150,21 @@ describe('repositori SQLite', () => {
     expect(stored?.draft).toBeNull();
   });
 
+  it('en actualitzar un document propi, l’esborrany sense canvis segueix la revisió importada', async () => {
+    const document = makeDocument();
+    await saveNewDocument(db, document);
+    const incoming = { ...document, revision: 2, publishedAt: '2026-06-01T07:30:00Z', event: { ...document.event, title: 'Revisió rebuda' } };
+    await applyImport(db, await assessImport(db, incoming));
+    expect((await getStoredDocument(db, document.documentId))?.draft?.event.title).toBe('Revisió rebuda');
+
+    await saveDraft(db, document.documentId, { ...incoming, event: { ...incoming.event, title: 'Canvi meu' } });
+    const newer = { ...incoming, revision: 3, publishedAt: '2026-06-01T07:40:00Z', event: { ...incoming.event, title: 'Revisió tres' } };
+    await applyImport(db, await assessImport(db, newer));
+    const stored = await getStoredDocument(db, document.documentId);
+    expect(stored?.document.event.title).toBe('Revisió tres');
+    expect(stored?.draft?.event.title).toBe('Canvi meu');
+  });
+
   it('distingeix duplicats, actualitzacions i conflictes', async () => {
     const document = makeDocument();
     await saveNewDocument(db, document, 'received');
