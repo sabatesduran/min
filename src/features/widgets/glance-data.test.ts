@@ -30,4 +30,11 @@ describe('dades de widget', () => {
     expect(live.steps.every((step, index) => index === 0 || step.at > (live.steps[index - 1]?.at ?? 0))).toBe(true);
     expect(JSON.stringify(live).length).toBeLessThan(4000);
   });
+
+  it('retalla els passos perquè l’activitat no superi el límit d’iOS', () => {
+    const document = makeDocument();
+    document.tasks.forEach((task) => { task.title = '字'.repeat(180); });
+    const live = buildLiveGlanceProps(document, makePreferences(), Date.parse('2026-06-01T07:30:00Z'));
+    expect(new TextEncoder().encode(JSON.stringify(live)).length).toBeLessThan(4000);
+  });
 });

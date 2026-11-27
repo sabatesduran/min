@@ -125,6 +125,23 @@ export type LiveStep = Pick<GlanceProps, 'state' | 'eyebrow' | 'title' | 'timeLa
 export type LiveGlanceProps = GlanceProps & { steps: LiveStep[]; hasMore: boolean };
 
 const MAX_LIVE_STEPS = 6;
+// ActivityKit rejects content above 4 KB; leave room for its own envelope.
+const MAX_LIVE_BYTES = 3_000;
+const MAX_STEP_TEXT = 60;
+
+function utf8Bytes(value: string): number {
+  let bytes = 0;
+  for (const character of value) {
+    const code = character.codePointAt(0) ?? 0;
+    bytes += code < 0x80 ? 1 : code < 0x800 ? 2 : code < 0x10000 ? 3 : 4;
+  }
+  return bytes;
+}
+
+function clip(value: string): string {
+  const characters = [...value];
+  return characters.length > MAX_STEP_TEXT ? `${characters.slice(0, MAX_STEP_TEXT - 1).join('')}…` : value;
+}
 
 export function buildLiveGlanceProps(
   document: SharedDocument,
@@ -137,9 +154,14 @@ export function buildLiveGlanceProps(
     at: date.getTime(),
     state: props.state,
     eyebrow: props.eyebrow,
-    title: props.title,
+    title: clip(props.title),
     timeLabel: props.timeLabel,
-    secondary: props.secondary,
+    secondary: clip(props.secondary),
   }));
-  return { ...(current?.props ?? buildGlanceProps(document, preferences, nowMs)), steps, hasMore: upcoming.length > steps.length };
+  const live = { ...(current?.props ?? buildGlanceProps(document, preferences, nowMs)), steps, hasMore: upcoming.length > steps.length };
+  while (live.steps.length && utf8Bytes(JSON.stringify(live)) > MAX_LIVE_BYTES) {
+    live.steps.pop();
+    live.hasMore = true;
+  }
+  return live;
 }
