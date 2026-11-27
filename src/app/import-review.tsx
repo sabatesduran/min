@@ -19,6 +19,7 @@ import { Screen } from '@/ui/components/screen';
 import { colorForAccent } from '@/ui/accent';
 import { layout, spacing } from '@/ui/tokens';
 import { useMinTheme } from '@/ui/use-min-theme';
+import { goBack } from '@/ui/go-back';
 
 type ImportError = { title: string; message: string };
 
@@ -46,7 +47,7 @@ export default function ImportReviewScreen() {
   }, [db, uri]);
   const diff = useMemo(() => assessment && assessment.kind !== 'new' ? diffDocuments(assessment.current, assessment.incoming) : null, [assessment]);
   if (!assessment && !error) return <LoadingView />;
-  if (error) return <Screen><NavigationHeader title="Importa i revisa" mode="close" /><MinText variant="hero">{error.title}</MinText><MinText style={[styles.lead, { color: colors.secondary }]}>{error.message}</MinText><Button label="Tanca" variant="secondary" onPress={() => router.back()} /></Screen>;
+  if (error) return <Screen><NavigationHeader title="Importa i revisa" mode="close" /><MinText variant="hero">{error.title}</MinText><MinText style={[styles.lead, { color: colors.secondary }]}>{error.message}</MinText><Button label="Tanca" variant="secondary" onPress={() => goBack()} /></Screen>;
   if (!assessment) return null;
   const document = assessment.incoming;
   const eventAccent = colorForAccent(document.event.accent, colors);
@@ -107,7 +108,7 @@ export default function ImportReviewScreen() {
           onPress={assessment.kind === 'duplicate' ? openExisting : apply}
           style={styles.primaryAction}
         />
-        <Button label={secondaryLabel} variant="secondary" disabled={working} onPress={() => router.back()} style={styles.secondaryAction} />
+        <Button label={secondaryLabel} variant="secondary" disabled={working} onPress={() => goBack()} style={styles.secondaryAction} />
       </View>
     </BottomActionBar>
   );

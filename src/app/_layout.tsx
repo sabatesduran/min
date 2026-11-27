@@ -11,6 +11,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { migrateDatabase } from '@/db/migrations';
 import { AppDataProvider, useAppData } from '@/features/app-data/app-data-provider';
 import { useMinTheme } from '@/ui/use-min-theme';
+import { installWebAlert } from '@/ui/web-alert';
+
+installWebAlert();
 
 /** Opens the event a reminder belongs to when the user taps the notification. */
 function NotificationLinks() {

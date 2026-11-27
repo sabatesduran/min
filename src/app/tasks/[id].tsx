@@ -15,6 +15,7 @@ import { MinText } from '@/ui/components/min-text';
 import { Screen } from '@/ui/components/screen';
 import { radius, spacing } from '@/ui/tokens';
 import { useMinTheme } from '@/ui/use-min-theme';
+import { goBack } from '@/ui/go-back';
 
 export default function TaskDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -52,7 +53,7 @@ export default function TaskDetailScreen() {
   return (
     <Screen>
       <View style={styles.header}>
-        <IconButton icon="close" label="Tanca" onPress={() => router.back()} />
+        <IconButton icon="close" label="Tanca" onPress={() => goBack()} />
         <Button
           label={editable ? 'Edita' : 'Duplica'}
           accessibilityLabel={editable ? 'Edita la tasca' : 'Duplica l’esdeveniment per editar la tasca'}

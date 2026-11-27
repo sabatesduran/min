@@ -14,6 +14,7 @@ import { NavigationHeader } from '@/ui/components/navigation-header';
 import { Screen } from '@/ui/components/screen';
 import { spacing } from '@/ui/tokens';
 import { useMinTheme } from '@/ui/use-min-theme';
+import { goBack } from '@/ui/go-back';
 
 export default function RemovePersonScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -63,7 +64,7 @@ export default function RemovePersonScreen() {
         </View>
       ) : null}
       <Button label={replacementId ? 'Reassigna i elimina' : 'Deixa pendent i elimina'} icon="trash" variant="danger" loading={saving} onPress={apply} />
-      <Button label="Cancel·la" variant="quiet" onPress={() => router.back()} />
+      <Button label="Cancel·la" variant="quiet" onPress={() => goBack()} />
     </Screen>
   );
 }

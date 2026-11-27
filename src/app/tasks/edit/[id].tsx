@@ -20,6 +20,7 @@ import { Screen } from '@/ui/components/screen';
 import { SegmentedControl } from '@/ui/components/segmented-control';
 import { spacing } from '@/ui/tokens';
 import { useMinTheme } from '@/ui/use-min-theme';
+import { goBack } from '@/ui/go-back';
 
 type Kind = Task['kind'];
 
@@ -87,7 +88,7 @@ export default function EditTaskScreen() {
       const tasks = existing ? base.tasks.map((candidate) => candidate.id === existing.id ? task : candidate) : [...base.tasks, task];
       await saveDraft(parseSharedDocument({ ...base, tasks }));
       if (returnTo === 'editor') router.replace('/editor');
-      else router.back();
+      else goBack();
     } catch (error) {
       Alert.alert('No s’ha pogut desar', error instanceof Error ? error.message : 'Revisa les dades.');
     } finally { setSaving(false); }

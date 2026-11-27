@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { router } from 'expo-router';
 
 import { spacing } from '@/ui/tokens';
 
 import { IconButton } from './button';
 import { MinText } from './min-text';
+import { goBack } from '@/ui/go-back';
 
 export function NavigationHeader({
   title,
@@ -20,7 +20,7 @@ export function NavigationHeader({
 }) {
   return (
     <View style={styles.header}>
-      <IconButton icon={mode === 'close' ? 'close' : 'back'} label={mode === 'close' ? 'Tanca' : 'Enrere'} onPress={onBack ?? (() => router.back())} />
+      <IconButton icon={mode === 'close' ? 'close' : 'back'} label={mode === 'close' ? 'Tanca' : 'Enrere'} onPress={onBack ?? (() => goBack())} />
       <MinText variant="label" numberOfLines={2} style={styles.title}>{title}</MinText>
       <View style={styles.right}>{right}</View>
     </View>
