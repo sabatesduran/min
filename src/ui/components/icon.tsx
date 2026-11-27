@@ -38,6 +38,7 @@ import UserAdd01Icon from '@hugeicons/core-free-icons/UserAdd01Icon';
 import UserIcon from '@hugeicons/core-free-icons/UserIcon';
 import UserMultiple02Icon from '@hugeicons/core-free-icons/UserMultiple02Icon';
 import { HugeiconsIcon, type HugeiconsProps, type IconSvgElement } from '@hugeicons/react-native';
+import { Platform } from 'react-native';
 
 const icons = {
   add: Add01Icon,
@@ -85,5 +86,5 @@ const icons = {
 export type MinIconName = keyof typeof icons;
 
 export function MinIcon({ name, size = 20, strokeWidth = 1.8, ...props }: Omit<HugeiconsProps, 'icon'> & { name: MinIconName }) {
-  return <HugeiconsIcon icon={icons[name]} size={size} strokeWidth={strokeWidth} accessible={false} {...props} />;
+  return <HugeiconsIcon icon={icons[name]} size={size} strokeWidth={strokeWidth} {...(Platform.OS === 'web' ? {} : { accessible: false })} {...props} />;
 }
