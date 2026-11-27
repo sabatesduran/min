@@ -22,6 +22,12 @@ describe('sharedDocumentSchema', () => {
     if (!result.success) expect(result.error.issues.some((issue) => issue.message.includes('persona inexistent'))).toBe(true);
   });
 
+  it('rebutja funcions amb persones inexistents', () => {
+    const document = makeDocument();
+    document.tasks[0]!.roles = [{ id: '90000000-0000-4000-8000-000000000001', name: 'Carro', personIds: ['20000000-0000-4000-8000-000000000099'], teamIds: [] }];
+    expect(safeParseSharedDocument(document).success).toBe(false);
+  });
+
   it('rebutja tasques fora de la finestra', () => {
     const document = makeDocument();
     const interval = document.tasks.find((task) => task.id === ids.interval);
