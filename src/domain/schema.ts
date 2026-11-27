@@ -139,14 +139,6 @@ export const sharedDocumentSchema = z
       for (const teamId of task.teamIds) {
         if (!teams.has(teamId)) context.addIssue({ code: 'custom', path: ['tasks', index, 'teamIds'], message: 'La tasca referencia un equip inexistent.' });
       }
-      for (const role of task.roles) {
-        if (role.personIds.some((personId) => !people.has(personId))) {
-          context.addIssue({ code: 'custom', path: ['tasks', index, 'roles'], message: 'Una funció referencia una persona inexistent.' });
-        }
-        if (role.teamIds.some((teamId) => !teams.has(teamId))) {
-          context.addIssue({ code: 'custom', path: ['tasks', index, 'roles'], message: 'Una funció referencia un equip inexistent.' });
-        }
-      }
       if (task.kind === 'interval' && Temporal.Instant.compare(Temporal.Instant.from(task.startsAt), Temporal.Instant.from(task.endsAt)) >= 0) {
         context.addIssue({ code: 'custom', path: ['tasks', index, 'endsAt'], message: 'El final de la tasca ha de ser posterior a l’inici.' });
       }
