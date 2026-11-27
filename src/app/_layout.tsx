@@ -1,7 +1,7 @@
 import '@/global.css';
 
 import * as Notifications from 'expo-notifications';
-import { router, Stack } from 'expo-router';
+import { router, Stack, useGlobalSearchParams, useSegments } from 'expo-router';
 import { SQLiteProvider } from 'expo-sqlite';
 import { StatusBar } from 'expo-status-bar';
 import { Suspense, useEffect } from 'react';
@@ -24,6 +24,25 @@ function NotificationLinks() {
   return null;
 }
 
+/**
+ * With the app already open, `/?documentId=` resolves to the tabs instead of the entry screen,
+ * so the requested event is selected here.
+ */
+function EventLinks() {
+  const params = useGlobalSearchParams<{ documentId?: string | string[] }>();
+  const requestedId = Array.isArray(params.documentId) ? params.documentId[0] : params.documentId;
+  const inTabs = useSegments()[0] === '(tabs)';
+  const { loading, documents, selectedDocumentId, selectDocument } = useAppData();
+  useEffect(() => {
+    if (!inTabs || !requestedId || loading) return;
+    router.setParams({ documentId: undefined });
+    if (requestedId !== selectedDocumentId && documents.some((item) => item.document.documentId === requestedId)) {
+      void selectDocument(requestedId);
+    }
+  }, [documents, inTabs, loading, requestedId, selectDocument, selectedDocumentId]);
+  return null;
+}
+
 function Navigator() {
   const { scheme, colors } = useMinTheme();
   const { appPreferences } = useAppData();
@@ -34,6 +53,7 @@ function Navigator() {
   return (
     <>
       {Platform.OS === 'web' ? null : <NotificationLinks />}
+      <EventLinks />
       <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
       <Stack
         screenOptions={{
