@@ -2,6 +2,7 @@ import { Temporal } from '@js-temporal/polyfill';
 
 import type { Accent, ChecklistItem, RoleAssignment, SharedDocument, Task } from '@/domain/models';
 import { parseSharedDocument } from '@/domain/schema';
+import { orderedTasks } from '@/domain/time';
 import { buildDocumentFileName } from '@/features/sharing/document-file-name';
 
 export type BuilderPerson = {
@@ -198,7 +199,8 @@ export function documentToDraft(document: SharedDocument): BuilderDraft {
       ...(person.disambiguation ? { disambiguation: person.disambiguation } : {}),
     })),
     teams: document.teams.map((team) => ({ id: team.id, name: team.name, personIds: [...team.personIds] })),
-    tasks: document.tasks.map((task) => ({
+    // The download numbers tasks by position, so start from the order the app shows.
+    tasks: orderedTasks(document.tasks).map((task) => ({
       id: task.id,
       kind: task.kind,
       title: task.title,
